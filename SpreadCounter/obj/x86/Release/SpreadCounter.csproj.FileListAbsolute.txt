@@ -1,0 +1,41 @@
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\Interop.XTAPI.dll
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.csproj.ResolveComReference.cache
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.SpreadCounter.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.InputTrades.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.InputPosition.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.Butterfly.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.Properties.Resources.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.exe
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.pdb
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\LumenWorks.Framework.IO.dll
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.exe
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.pdb
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.XML
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\MIMEParser.dll
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\OpenPOP.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.exe
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.pdb
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\DiffieHellman.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\LumenWorks.Framework.IO.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\MIMEParser.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\OpenPOP.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\Org.Mentalis.Security.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\Tamir.SharpSSH.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\Interop.XTAPI.dll
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.csproj.ResolveComReference.cache
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.SpreadCounter.resources
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.InputTrades.resources
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.InputPosition.resources
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.Butterfly.resources
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.Properties.Resources.resources
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.exe
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Release\SpreadCounter.pdb
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\stock-market.ico
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.exe.config
+C:\Users\Addie\My Dropbox\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.XML

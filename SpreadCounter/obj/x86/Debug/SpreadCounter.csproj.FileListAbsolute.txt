@@ -1,0 +1,11 @@
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Debug\SpreadCounter.exe
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Debug\SpreadCounter.pdb
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\Interop.XTAPI.dll
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\SpreadCounter.csproj.ResolveComReference.cache
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\SpreadCounter.Form1.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\SpreadCounter.Properties.Resources.resources
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\SpreadCounter.exe
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\obj\x86\Debug\SpreadCounter.pdb

@@ -1,0 +1,793 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpreadCounter</name>
+    </assembly>
+    <members>
+        <member name="F:SpreadCounter.Butterfly.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.Butterfly.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SpreadCounter.Butterfly.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:SpreadCounter.SpreadCounter">
+            <summary>
+            Represents the main SpreadCounter class.
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.inputtrades">
+            <summary>
+            Represents the InputTrades class.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.inputposition">
+            <summary>
+            Represents the InputPosition class.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.butterfly">
+            <summary>
+            Represents the Butterfly class.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.isTradesShown">
+            <summary>
+            Set to keep InputTrades class open.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.isPositionShown">
+            <summary>
+            Set to keep InputPosition class open.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.isButterflyShown">
+            <summary>
+            Set to keep Butterfly class open.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.CrudePosition">
+            <summary>
+            Holds the Crude net, spread, and fly positions.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.GasPosition">
+            <summary>
+            Holds the Gas net, spread, and fly positions.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.HeatPosition">
+            <summary>
+            Holds the Heat net, spread, and fly positions.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.NaturalPosition">
+            <summary>
+            Holds the Natural net, spread, and fly positions.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.ttGate">
+            <summary>
+            Object used to connect to TT.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.m_orderSet">
+            <summary>
+            Object used to receive fill notifications.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.CrudeFillList">
+            <summary>
+            List of individual crude fills.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.GasFillList">
+            <summary>
+            List of individual gas fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.HeatFillList">
+            <summary>
+            List of individual heat fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.NaturalFillList">
+            <summary>
+            List of individual natural fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.CrudeCombinedFillList">
+            <summary>
+            List of combined crude fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.GasCombinedFillList">
+            <summary>
+            List of individual gas fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.HeatCombinedFillList">
+            <summary>
+            List of individual heat fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.NaturalCombinedFillList">
+            <summary>
+            List of individual natural fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.CrudeNetList">
+            <summary>
+            List of combined crude fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.GasNetList">
+            <summary>
+            List of combined gas fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.HeatNetList">
+            <summary>
+            List of combined heat fills. 
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.NaturalNetList">
+            <summary>
+            List of individual natural fills. 
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.#ctor">
+            <summary>
+            Initializes a new instance of the SpreadCounter class.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.m_orderSet_OnOrderFillData(XTAPI.TTFillObj)">
+            <summary>
+            Handles the order fill data.
+            </summary>
+            <param name="pFillObj">The fill object.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateFillDisplay(XTAPI.TTFillObj)">
+            <summary>
+            Processes a new fill and splits it according to contract.
+            </summary>
+            <param name="pFillObj">The fill coming from TT.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateCrudePosition(XTAPI.TTFillObj)">
+            <summary>
+            Processes and parses a new crude fill.
+            </summary>
+            <param name="pFillObj">The fill coming from TT.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateGasPosition(XTAPI.TTFillObj)">
+            <summary>
+            Processes and parses a new gas fill.
+            </summary>
+            <param name="pFillObj">The fill coming from TT.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateHeatPosition(XTAPI.TTFillObj)">
+            <summary>
+            Processes and parses a new heat fill.
+            </summary>
+            <param name="pFillObj">The fill coming from TT.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateNaturalPosition(XTAPI.TTFillObj)">
+            <summary>
+            Processes and parses a new natural fill.
+            </summary>
+            <param name="pFillObj">The fill coming from TT.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateInitialCrudePosition(SpreadCounter.SpreadCounter.Trade,System.Boolean)">
+            <summary>
+            Processes and parses a manually input crude trade.
+            </summary>
+            <param name="trade">The fill coming from TT.</param>
+            <param name="clear">if set to <c>true</c> clears list and updates position else adds to existing position.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateInitialGasPosition(SpreadCounter.SpreadCounter.Trade,System.Boolean)">
+            <summary>
+            Processes and parses a manually input gas trade.
+            </summary>
+            <param name="trade">The trade.</param>
+            <param name="clear">if set to <c>true</c> clears list and updates position else adds to existing position.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateInitialHeatPosition(SpreadCounter.SpreadCounter.Trade,System.Boolean)">
+            <summary>
+            Processes and parses a manually input heat trade.
+            </summary>
+            <param name="trade">The fill coming from TT.</param>
+            <param name="clear">if set to <c>true</c> clears list and updates position else adds to existing position.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.UpdateInitialNaturalPosition(SpreadCounter.SpreadCounter.Trade,System.Boolean)">
+            <summary>
+            Processes and parses a manually input natural trade.
+            </summary>
+            <param name="trade">The fill coming from TT.</param>
+            <param name="clear">if set to <c>true</c> clears list and updates position else adds to existing position.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CombineCrudeTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Combines the crude trades.
+            </summary>
+            <param name="list">The crude fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CombineGasTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Combines the gas trades.
+            </summary>
+            <param name="list">The gas fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CombineHeatTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Combines the heat trades.
+            </summary>
+            <param name="GasFillList">The gas fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CombineNaturalTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Combines the natural trades.
+            </summary>
+            <param name="GasFillList">The natural fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintCrudeTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Prints the crude trade.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintGasTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Prints the gas trade.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintHeatTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Prints the heat trade.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintNaturalTrade(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Prints the natural trade.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceCrudeContracts">
+            <summary>
+            Balances the crude contracts.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceGasContracts">
+            <summary>
+            Balances the gas contracts.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceHeatContracts">
+            <summary>
+            Balances the heat contracts.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceNaturalContracts">
+            <summary>
+            Balances the natural contracts.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateCrudeSpreadCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Calculates the crude spread count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateGasSpreadCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Calculates the gas spread count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateHeatSpreadCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Calculates the heat spread count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateNaturalSpreadCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.Trade})">
+            <summary>
+            Calculates the natural spread count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceCrudeSpreads(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Balances the crude spreads.
+            </summary>
+            <param name="spreadlist">The spreadlist.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceGasSpreads(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Balances the gas spreads.
+            </summary>
+            <param name="spreadlist">The spreadlist.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceHeatSpreads(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Balances the heat spreads.
+            </summary>
+            <param name="spreadlist">The spreadlist.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.BalanceNaturalSpreads(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Balances the natural spreads.
+            </summary>
+            <param name="spreadlist">The spreadlist.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateCrudeFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Calculates the crude fly count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateGasFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Calculates the gas fly count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateHeatFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Calculates the heat fly count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateNaturalFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Calculates the natural fly count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.GetMonthIndex(System.String)">
+            <summary>
+            Gets the index of the month.
+            </summary>
+            <param name="monthVal">The month string.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.DateCompare(SpreadCounter.SpreadCounter.Trade,SpreadCounter.SpreadCounter.Trade)">
+            <summary>
+            Compares the date in two trades. Used to sort list of trades.
+            </summary>
+            <param name="o1">First Trade.</param>
+            <param name="o2">Second Trade.</param>
+            <returns>Returns an integer indicating whether the first trade is earlier than, the same as, or later than the second trade.</returns>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.DateCompare(SpreadCounter.SpreadCounter.NetTrade,SpreadCounter.SpreadCounter.NetTrade)">
+            <summary>
+            Compares the date in two trades. Used to sort list of trades.
+            </summary>
+            <param name="o1">First Trade.</param>
+            <param name="o2">Second Trade.</param>
+            <returns>Returns an integer indicating whether the first trade is earlier than, the same as, or later than the second trade.</returns>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ClearCrudePosition">
+            <summary>
+            Clears the crude position.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ClearGasPosition">
+            <summary>
+            Clears the gas position.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ClearHeatPosition">
+            <summary>
+            Clears the heat position.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ClearNaturalPosition">
+            <summary>
+            Clears the natural position.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ClearAll">
+            <summary>
+            Clears all position data.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.clOptionNetComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the clOptionNetComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.clOptionSpreadComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the clOptionSpreadComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.rbOptionNetComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the rbOptionNetComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.rbOptionSpreadComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the rbOptionSpreadComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.hoOptionNetComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the hoOptionNetComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.hoOptionSpreadComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the hoOptionSpreadComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ngOptionNetComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the ngOptionNetComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ngOptionSpreadComboBox_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SelectedIndexChanged event of the ngOptionSpreadComboBox control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.SpreadCounter_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            Handles the FormClosing event of the SpreadCounter control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.aboutToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the aboutToolStripMenuItem control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.InputTradesButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the InputTradesButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.InputPositionButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the InputPositionButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CrudeClearButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the CrudeClearButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.GasClearButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the GasClearButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.HeatClearButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the HeatClearButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.NaturalClearButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the NaturalClearButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ClearAllButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the ClearAllButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.LoadFile_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the LoadFile control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.ButterflyChartButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the ButterflyChartButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.SpreadCounter_Load(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Load event of the SpreadCounter control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="T:SpreadCounter.SpreadCounter.PositionStruct">
+            <summary>
+            Stucture representing position.  
+            </summary>
+        </member>
+        <member name="T:SpreadCounter.SpreadCounter.Trade">
+            <summary>
+            Represents a trade with buy and sell data.  
+            </summary>
+        </member>
+        <member name="T:SpreadCounter.SpreadCounter.NetTrade">
+            <summary>
+            Represents a trade with one var holding quantity.  
+            </summary>
+        </member>
+        <member name="T:SpreadCounter.SpreadCounter.MyPolicy">
+            <summary>
+            My Policy
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.MyPolicy.CheckValidationResult(System.Net.ServicePoint,System.Security.Cryptography.X509Certificates.X509Certificate,System.Net.WebRequest,System.Int32)">
+            <summary>
+            Validates a server certificate.
+            </summary>
+            <param name="srvPoint">The <see cref="T:System.Net.ServicePoint"/> that will use the certificate.</param>
+            <param name="certificate">The certificate to validate.</param>
+            <param name="request">The request that received the certificate.</param>
+            <param name="certificateProblem">The problem that was encountered when using the certificate.</param>
+            <returns>
+            true if the certificate should be honored; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadCounter.InputPosition"/> class.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.#ctor(SpreadCounter.SpreadCounter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadCounter.InputPosition"/> class.
+            </summary>
+            <param name="form1">The form1.</param>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.SubmitButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the SubmitButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.SubmitTrade">
+            <summary>
+            Submits the trade.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.ColorText(System.String,System.Drawing.Color)">
+            <summary>
+            Colors the text.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="length">The length.</param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.ClearTrades">
+            <summary>
+            Clears the trades.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.GetMonthText(System.String)">
+            <summary>
+            Gets the month text.
+            </summary>
+            <param name="month">The month.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.GetYearText(System.String)">
+            <summary>
+            Gets the year text.
+            </summary>
+            <param name="year">The year.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.InputTrades_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Handles the KeyDown event of the InputTrades control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.InputPosition_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            Handles the FormClosing event of the InputPosition control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.ClearButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the ClearButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:SpreadCounter.InputPosition.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SpreadCounter.InputPosition.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadCounter.InputTrades"/> class.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.#ctor(SpreadCounter.SpreadCounter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SpreadCounter.InputTrades"/> class.
+            </summary>
+            <param name="form1">The form1.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.SubmitButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the SubmitButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.SubmitTrade">
+            <summary>
+            Submits the trade.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.ColorText(System.String,System.Drawing.Color)">
+            <summary>
+            Colors the text.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="length">The length.</param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.ClearTrades">
+            <summary>
+            Clears the trades.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.GetMonthText(System.String)">
+            <summary>
+            Gets the month text.
+            </summary>
+            <param name="month">The month.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.GetYearText(System.String)">
+            <summary>
+            Gets the year text.
+            </summary>
+            <param name="year">The year.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.InputTrades_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Handles the KeyDown event of the InputTrades control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.InputTrades_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            Handles the FormClosing event of the InputTrades control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.ClearButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the ClearButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:SpreadCounter.InputTrades.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:SpreadCounter.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SpreadCounter.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SpreadCounter.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+    </members>
+</doc>

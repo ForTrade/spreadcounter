@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shfbBuild product="Sandcastle Help File Builder Utilities" version="1.8.0.3" projectFile="C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\HelpFile.shfbproj" started="3/28/2010 3:03:07 AM">
+<buildStep step="Initializing">
+</buildStep>
+<buildStep step="ClearWorkFolder">
+Clearing working folder...
+</buildStep>
+<buildStep step="FindingTools">
+Finding tools...
+Found Sandcastle tools in 'C:\Program Files\Sandcastle\'
+Searching for HTML Help 1 compiler...
+Found HTML Help 1 compiler in 'C:\Program Files\HTML Help Workshop\'
+</buildStep>
+<buildStep step="ValidatingDocumentationSources">
+Validating and copying documentation source information
+Source: C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.exe
+    Found assembly 'C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.exe'
+Source: C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter.sln
+    Found project 'C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\SpreadCounter.csproj'
+Source: C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.xml
+
+Parsing project files
+    Found assembly 'C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.exe'
+
+References to use:
+    LumenWorks.Framework.IO
+    Microsoft.CSharp
+    System
+    System.Core
+    System.Data
+    System.Data.DataSetExtensions
+    System.Deployment
+    System.Drawing
+    System.Windows.Forms
+    System.Xml
+    System.Xml.Linq
+    XTAPI
+
+Copying XML comments files
+    C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.XML -&gt; C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\Help\Working\SpreadCounter.XML
+SHFB: Warning BE0063: 'C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.XML' matches a previously copied comments filename.  The duplicate will be copied to a unique name to preserve the comments it contains.
+    C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\SpreadCounter\bin\Release\SpreadCounter.XML -&gt; C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\Help\Working\{a8e7c0b5-e63b-42dc-ac35-24c4ddd657b3}
+</buildStep>
+<buildStep step="GenerateSharedContent">
+Generating shared content files (en-US, English (United States))...
+    Last step completed in 00:00:00.0210
+</buildStep>
+<buildStep step="GenerateApiFilter">
+Generating API filter for MRefBuilder...
+    Last step completed in 00:00:00.0080
+</buildStep>
+<buildStep step="GenerateReflectionInfo">
+Generating reflection information...
+[C:\Windows\Microsoft.NET\Framework\v3.5\MSBuild.exe]
+GenerateRefInfo:
+  MrefBuilder (v2.4.10520.1)
+  Copyright c Microsoft 2006
+  Info: Loaded 2 assemblies for reflection and 11 dependency assemblies.
+  
+  Unhandled Exception: System.ArgumentException: An item with the same key has already been added.
+     at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+     at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+     at Microsoft.Ddue.Tools.ManagedReflectionWriter.VisitNamespaces(NamespaceList spaces)
+     at Microsoft.Ddue.Tools.Reflection.ApiVisitor.VisitApis()
+     at Microsoft.Ddue.Tools.MRefBuilder.Main(String[] args)
+C:\Users\Addie\Documents\Visual Studio 2010\Projects\SpreadCounter\Help\Working\GenerateRefInfo.proj(35,5): error MSB6006: &quot;MRefBuilder.exe&quot; exited with code -532462766.
+    Last step completed in 00:00:29.9567
+</buildStep>
+<buildStep step="Failed">
+
+SHFB: Error BE0043: Unexpected error detected in last build step.  See output above for details.
+
+</buildStep>
+</shfbBuild>
