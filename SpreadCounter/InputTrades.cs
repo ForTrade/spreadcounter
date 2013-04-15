@@ -81,46 +81,36 @@ namespace SpreadCounter
             SummaryTextBox.SelectionStart = SummaryTextBox.Text.Length;
             SummaryTextBox.ScrollToCaret();
             PositionTextBox.Clear();
-            CheckState state = clearPosition_checkBox.CheckState;
+          
+            bool clear = false;
+            if (clearPosition_checkBox.CheckState == CheckState.Checked)
+                clear = true;
+            else
+                clear = false;
 
             if (ContractComboBox.Text == "CL")
             {
-                if (state == CheckState.Checked)
-                    sc.UpdateInitialCrudePosition(input, true);
-                else
-                    sc.UpdateInitialCrudePosition(input, false);
+                sc.UpdateInitialCrudePosition(input, clear);
                 sc.BalanceCrudeContracts();
             }
             else if (ContractComboBox.Text == "RB")
             {
-                if (state == CheckState.Checked)
-                    sc.UpdateInitialGasPosition(input, true);
-                else
-                    sc.UpdateInitialGasPosition(input, false);
+                sc.UpdateInitialGasPosition(input, clear);
                 sc.BalanceGasContracts();
             }
             else if (ContractComboBox.Text == "HO")
             {
-                if (state == CheckState.Checked)
-                    sc.UpdateInitialHeatPosition(input, true);
-                else
-                    sc.UpdateInitialHeatPosition(input, false);
+                sc.UpdateInitialHeatPosition(input, clear);
                 sc.BalanceHeatContracts();
             }
             else if (ContractComboBox.Text == "NG")
             {
-                if (state == CheckState.Checked)
-                    sc.UpdateInitialNaturalPosition(input, true);
-                else
-                    sc.UpdateInitialNaturalPosition(input, false);
+                sc.UpdateInitialNaturalPosition(input, clear);
                 sc.BalanceNaturalContracts();
             }
             else if (ContractComboBox.Text == "BZ")
             {
-                if (state == CheckState.Checked)
-                    sc.UpdateInitialBrentPosition(input, true);
-                else
-                    sc.UpdateInitialBrentPosition(input, false);
+                sc.UpdateInitialBrentPosition(input, clear);
                 sc.BalanceNaturalContracts();
             }
             else
