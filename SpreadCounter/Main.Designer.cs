@@ -84,7 +84,6 @@ namespace SpreadCounter
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inputTradesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inputPositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.butterflyChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,6 +96,19 @@ namespace SpreadCounter
             this.LoadFile = new System.Windows.Forms.Button();
             this.accountComboBox = new System.Windows.Forms.ComboBox();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.BrentClearButton = new System.Windows.Forms.Button();
+            this.brentGrid = new System.Windows.Forms.ListView();
+            this.bzSpreadPosition = new System.Windows.Forms.TextBox();
+            this.bzOptionSpreadComboBox = new System.Windows.Forms.ComboBox();
+            this.bzOptionNetComboBox = new System.Windows.Forms.ComboBox();
+            this.bzNetPosition = new System.Windows.Forms.TextBox();
+            this.bzFlyPosition = new System.Windows.Forms.TextBox();
+            this.bzNetShortBox = new System.Windows.Forms.TextBox();
+            this.bzNetLongBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -255,6 +267,7 @@ namespace SpreadCounter
             this.clSpreadPosition.TabIndex = 53;
             this.clSpreadPosition.TabStop = false;
             this.clSpreadPosition.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.clSpreadPosition.TextChanged += new System.EventHandler(this.clSpreadPosition_TextChanged);
             // 
             // label25
             // 
@@ -683,6 +696,20 @@ namespace SpreadCounter
             this.naturalGrid.TabStop = false;
             this.naturalGrid.UseCompatibleStateImageBehavior = false;
             this.naturalGrid.View = System.Windows.Forms.View.Details;
+            this.naturalGrid.SelectedIndexChanged += new System.EventHandler(this.naturalGrid_SelectedIndexChanged);
+            // 
+            // brentGrid
+            // 
+            this.brentGrid.FullRowSelect = true;
+            this.brentGrid.GridLines = true;
+            this.brentGrid.Location = new System.Drawing.Point(733, 59);
+            this.brentGrid.Name = "brentGrid";
+            this.brentGrid.Size = new System.Drawing.Size(173, 292);
+            this.brentGrid.TabIndex = 229;
+            this.brentGrid.TabStop = false;
+            this.brentGrid.UseCompatibleStateImageBehavior = false;
+            this.brentGrid.View = System.Windows.Forms.View.Details;
+            this.brentGrid.SelectedIndexChanged += new System.EventHandler(this.brentGrid_SelectedIndexChanged);
             // 
             // menuStrip1
             // 
@@ -692,7 +719,7 @@ namespace SpreadCounter
             this.clearToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(739, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(921, 24);
             this.menuStrip1.TabIndex = 214;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -700,7 +727,6 @@ namespace SpreadCounter
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.inputTradesToolStripMenuItem,
-            this.inputPositionToolStripMenuItem,
             this.butterflyChartToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -712,13 +738,6 @@ namespace SpreadCounter
             this.inputTradesToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.inputTradesToolStripMenuItem.Text = "Input Trades";
             this.inputTradesToolStripMenuItem.Click += new System.EventHandler(this.inputTradesToolStripMenuItem_Click);
-            // 
-            // inputPositionToolStripMenuItem
-            // 
-            this.inputPositionToolStripMenuItem.Name = "inputPositionToolStripMenuItem";
-            this.inputPositionToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.inputPositionToolStripMenuItem.Text = "Input Position";
-            this.inputPositionToolStripMenuItem.Click += new System.EventHandler(this.inputPositionToolStripMenuItem_Click);
             // 
             // butterflyChartToolStripMenuItem
             // 
@@ -790,17 +809,27 @@ namespace SpreadCounter
             this.GasClearButton.UseVisualStyleBackColor = true;
             this.GasClearButton.Click += new System.EventHandler(this.GasClearButton_Click);
             // 
+            // BrentClearButton
+            // 
+            this.BrentClearButton.Location = new System.Drawing.Point(778, 362);
+            this.BrentClearButton.Name = "BrentClearButton";
+            this.BrentClearButton.Size = new System.Drawing.Size(75, 23);
+            this.BrentClearButton.TabIndex = 219;
+            this.BrentClearButton.Text = "Clear";
+            this.BrentClearButton.UseVisualStyleBackColor = true;
+            this.BrentClearButton.Click += new System.EventHandler(this.BrentClearButton_Click);
+            // 
             // openFD
             // 
             this.openFD.FileName = "openFileDialog1";
             // 
             // LoadFile
             // 
-            this.LoadFile.Location = new System.Drawing.Point(294, 2);
+            this.LoadFile.Location = new System.Drawing.Point(305, 1);
             this.LoadFile.Name = "LoadFile";
-            this.LoadFile.Size = new System.Drawing.Size(122, 23);
+            this.LoadFile.Size = new System.Drawing.Size(133, 23);
             this.LoadFile.TabIndex = 2;
-            this.LoadFile.Text = "Load eMIDAS Position";
+            this.LoadFile.Text = "Load FC Stone Position";
             this.LoadFile.UseVisualStyleBackColor = true;
             this.LoadFile.Click += new System.EventHandler(this.LoadFile_Click);
             // 
@@ -809,27 +838,171 @@ namespace SpreadCounter
             this.accountComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.accountComboBox.DropDownWidth = 121;
             this.accountComboBox.FormattingEnabled = true;
-            this.accountComboBox.Items.AddRange(new object[] {
-            "78288",
-            "78290"});
-            this.accountComboBox.Location = new System.Drawing.Point(117, 2);
+            this.accountComboBox.Items.AddRange(new object[] {"PAXY81"});
+            this.accountComboBox.Location = new System.Drawing.Point(107, 2);
             this.accountComboBox.Name = "accountComboBox";
-            this.accountComboBox.Size = new System.Drawing.Size(61, 21);
+            this.accountComboBox.Size = new System.Drawing.Size(83, 21);
             this.accountComboBox.TabIndex = 215;
+            this.accountComboBox.SelectedIndexChanged += new System.EventHandler(this.accountComboBox_SelectedIndexChanged);
             // 
             // passwordTextBox
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(188, 3);
+            this.passwordTextBox.Location = new System.Drawing.Point(199, 3);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
             this.passwordTextBox.TabIndex = 216;
             this.passwordTextBox.UseSystemPasswordChar = true;
             // 
+            // bzSpreadPosition
+            // 
+            this.bzSpreadPosition.Location = new System.Drawing.Point(843, 443);
+            this.bzSpreadPosition.Name = "bzSpreadPosition";
+            this.bzSpreadPosition.ReadOnly = true;
+            this.bzSpreadPosition.Size = new System.Drawing.Size(45, 20);
+            this.bzSpreadPosition.TabIndex = 228;
+            this.bzSpreadPosition.TabStop = false;
+            this.bzSpreadPosition.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // bzOptionSpreadComboBox
+            // 
+            this.bzOptionSpreadComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.bzOptionSpreadComboBox.FormattingEnabled = true;
+            this.bzOptionSpreadComboBox.Items.AddRange(new object[] {
+            "FG",
+            "GH",
+            "HJ",
+            "JK",
+            "KM",
+            "MN",
+            "NQ",
+            "QU",
+            "UV",
+            "VX",
+            "XZ",
+            "ZF"});
+            this.bzOptionSpreadComboBox.Location = new System.Drawing.Point(792, 468);
+            this.bzOptionSpreadComboBox.Name = "bzOptionSpreadComboBox";
+            this.bzOptionSpreadComboBox.Size = new System.Drawing.Size(45, 21);
+            this.bzOptionSpreadComboBox.TabIndex = 218;
+            // 
+            // bzOptionNetComboBox
+            // 
+            this.bzOptionNetComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.bzOptionNetComboBox.FormattingEnabled = true;
+            this.bzOptionNetComboBox.Items.AddRange(new object[] {
+            "F",
+            "G",
+            "H",
+            "J",
+            "K",
+            "M",
+            "N",
+            "Q",
+            "U",
+            "V",
+            "X",
+            "Z"});
+            this.bzOptionNetComboBox.Location = new System.Drawing.Point(792, 443);
+            this.bzOptionNetComboBox.Name = "bzOptionNetComboBox";
+            this.bzOptionNetComboBox.Size = new System.Drawing.Size(45, 21);
+            this.bzOptionNetComboBox.TabIndex = 217;
+            // 
+            // bzNetPosition
+            // 
+            this.bzNetPosition.Location = new System.Drawing.Point(792, 419);
+            this.bzNetPosition.Name = "bzNetPosition";
+            this.bzNetPosition.ReadOnly = true;
+            this.bzNetPosition.Size = new System.Drawing.Size(45, 20);
+            this.bzNetPosition.TabIndex = 227;
+            this.bzNetPosition.TabStop = false;
+            this.bzNetPosition.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // bzFlyPosition
+            // 
+            this.bzFlyPosition.Location = new System.Drawing.Point(843, 468);
+            this.bzFlyPosition.Name = "bzFlyPosition";
+            this.bzFlyPosition.ReadOnly = true;
+            this.bzFlyPosition.Size = new System.Drawing.Size(45, 20);
+            this.bzFlyPosition.TabIndex = 226;
+            this.bzFlyPosition.TabStop = false;
+            this.bzFlyPosition.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // bzNetShortBox
+            // 
+            this.bzNetShortBox.Location = new System.Drawing.Point(843, 419);
+            this.bzNetShortBox.Name = "bzNetShortBox";
+            this.bzNetShortBox.ReadOnly = true;
+            this.bzNetShortBox.Size = new System.Drawing.Size(45, 20);
+            this.bzNetShortBox.TabIndex = 225;
+            this.bzNetShortBox.TabStop = false;
+            this.bzNetShortBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // bzNetLongBox
+            // 
+            this.bzNetLongBox.Location = new System.Drawing.Point(741, 419);
+            this.bzNetLongBox.Name = "bzNetLongBox";
+            this.bzNetLongBox.ReadOnly = true;
+            this.bzNetLongBox.Size = new System.Drawing.Size(45, 20);
+            this.bzNetLongBox.TabIndex = 224;
+            this.bzNetLongBox.TabStop = false;
+            this.bzNetLongBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(741, 473);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(28, 13);
+            this.label2.TabIndex = 223;
+            this.label2.Text = "Flies";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(740, 447);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(46, 13);
+            this.label3.TabIndex = 222;
+            this.label3.Text = "Spreads";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(803, 403);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 13);
+            this.label4.TabIndex = 221;
+            this.label4.Text = "Net";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(796, 38);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(28, 18);
+            this.label5.TabIndex = 220;
+            this.label5.Text = "BZ";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // SpreadCounter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(739, 505);
+            this.ClientSize = new System.Drawing.Size(921, 505);
+            this.Controls.Add(this.BrentClearButton);
+            this.Controls.Add(this.brentGrid);
+            this.Controls.Add(this.bzSpreadPosition);
+            this.Controls.Add(this.bzOptionSpreadComboBox);
+            this.Controls.Add(this.bzOptionNetComboBox);
+            this.Controls.Add(this.bzNetPosition);
+            this.Controls.Add(this.bzFlyPosition);
+            this.Controls.Add(this.bzNetShortBox);
+            this.Controls.Add(this.bzNetLongBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.passwordTextBox);
             this.Controls.Add(this.accountComboBox);
             this.Controls.Add(this.LoadFile);
@@ -949,19 +1122,31 @@ namespace SpreadCounter
         private System.Windows.Forms.ListView gasGrid;
         private System.Windows.Forms.ListView heatGrid;
         private System.Windows.Forms.ListView naturalGrid;
+        private System.Windows.Forms.ListView brentGrid;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Button CrudeClearButton;
         private System.Windows.Forms.Button NaturalClearButton;
         private System.Windows.Forms.Button HeatClearButton;
         private System.Windows.Forms.Button GasClearButton;
+        private System.Windows.Forms.Button BrentClearButton;
+        private System.Windows.Forms.TextBox bzSpreadPosition;
+        private System.Windows.Forms.ComboBox bzOptionSpreadComboBox;
+        private System.Windows.Forms.ComboBox bzOptionNetComboBox;
+        private System.Windows.Forms.TextBox bzNetPosition;
+        private System.Windows.Forms.TextBox bzFlyPosition;
+        private System.Windows.Forms.TextBox bzNetShortBox;
+        private System.Windows.Forms.TextBox bzNetLongBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.OpenFileDialog openFD;
         private System.Windows.Forms.Button LoadFile;
         private ComboBox accountComboBox;
         private ToolStripMenuItem toolsToolStripMenuItem;
         private ToolStripMenuItem butterflyChartToolStripMenuItem;
         private ToolStripMenuItem inputTradesToolStripMenuItem;
-        private ToolStripMenuItem inputPositionToolStripMenuItem;
         private ToolStripMenuItem clearToolStripMenuItem;
         private ToolStripMenuItem clearAllToolStripMenuItem;
         private TextBox passwordTextBox;

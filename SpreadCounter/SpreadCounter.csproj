@@ -81,24 +81,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimpleHash.cs" />
-    <Compile Include="Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
     <Compile Include="InputTrades.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InputTrades.Designer.cs">
       <DependentUpon>InputTrades.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputPosition.cs">
+    <Compile Include="SimpleHash.cs" />
+    <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputPosition.Designer.cs">
-      <DependentUpon>InputPosition.cs</DependentUpon>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Butterfly.cs">
       <SubType>Form</SubType>
@@ -109,14 +103,11 @@
     <Compile Include="MessageBoxEx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="InputTrades.resx">
       <DependentUpon>InputTrades.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputPosition.resx">
-      <DependentUpon>InputPosition.cs</DependentUpon>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Butterfly.resx">
       <DependentUpon>Butterfly.cs</DependentUpon>

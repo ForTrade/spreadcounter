@@ -39,6 +39,7 @@
             this.YearTextBox = new System.Windows.Forms.TextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.SummaryTextBox = new System.Windows.Forms.RichTextBox();
+            this.clearPosition_checkBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // PositionTextBox
@@ -83,7 +84,8 @@
             "CL",
             "RB",
             "HO",
-            "NG"});
+            "NG",
+            "BZ"});
             this.ContractComboBox.Location = new System.Drawing.Point(12, 25);
             this.ContractComboBox.Name = "ContractComboBox";
             this.ContractComboBox.Size = new System.Drawing.Size(47, 21);
@@ -158,12 +160,24 @@
             this.SummaryTextBox.TabStop = false;
             this.SummaryTextBox.Text = "";
             // 
+            // clearPosition_checkBox
+            // 
+            this.clearPosition_checkBox.AutoSize = true;
+            this.clearPosition_checkBox.Location = new System.Drawing.Point(212, 79);
+            this.clearPosition_checkBox.Name = "clearPosition_checkBox";
+            this.clearPosition_checkBox.Size = new System.Drawing.Size(90, 17);
+            this.clearPosition_checkBox.TabIndex = 9;
+            this.clearPosition_checkBox.Text = "Clear Position";
+            this.clearPosition_checkBox.UseVisualStyleBackColor = true;
+            this.clearPosition_checkBox.CheckedChanged += new System.EventHandler(this.ClearPosition_CheckedChanged);
+            // 
             // InputTrades
             // 
             this.AcceptButton = this.SubmitButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(297, 207);
+            this.Controls.Add(this.clearPosition_checkBox);
             this.Controls.Add(this.SummaryTextBox);
             this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.YearTextBox);
@@ -179,6 +193,7 @@
             this.Text = "Input Trades";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputTrades_FormClosing);
+            this.Load += new System.EventHandler(this.InputTrades_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTrades_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -198,5 +213,6 @@
         private System.Windows.Forms.TextBox YearTextBox;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.RichTextBox SummaryTextBox;
+        private System.Windows.Forms.CheckBox clearPosition_checkBox;
     }
 }

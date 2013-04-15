@@ -80,24 +80,46 @@ namespace SpreadCounter
             SummaryTextBox.SelectionStart = SummaryTextBox.Text.Length;
             SummaryTextBox.ScrollToCaret();
             PositionTextBox.Clear();
+            CheckState state = clearPosition_checkBox.CheckState;
+
             if (ContractComboBox.Text == "CL")
             {
-                sc.UpdateInitialCrudePosition(input, false);
+                if (state == CheckState.Checked)
+                    sc.UpdateInitialCrudePosition(input, true);
+                else
+                    sc.UpdateInitialCrudePosition(input, false);
                 sc.BalanceCrudeContracts();
             }
             else if (ContractComboBox.Text == "RB")
             {
-                sc.UpdateInitialGasPosition(input, false);
+                if (state == CheckState.Checked)
+                    sc.UpdateInitialGasPosition(input, true);
+                else
+                    sc.UpdateInitialGasPosition(input, false);
                 sc.BalanceGasContracts();
             }
             else if (ContractComboBox.Text == "HO")
             {
-                sc.UpdateInitialHeatPosition(input, false);
+                if (state == CheckState.Checked)
+                    sc.UpdateInitialHeatPosition(input, true);
+                else
+                    sc.UpdateInitialHeatPosition(input, false);
                 sc.BalanceHeatContracts();
             }
             else if (ContractComboBox.Text == "NG")
             {
-                sc.UpdateInitialNaturalPosition(input, false);
+                if (state == CheckState.Checked)
+                    sc.UpdateInitialNaturalPosition(input, true);
+                else
+                    sc.UpdateInitialNaturalPosition(input, false);
+                sc.BalanceNaturalContracts();
+            }
+            else if (ContractComboBox.Text == "BZ")
+            {
+                if (state == CheckState.Checked)
+                    sc.UpdateInitialBrentPosition(input, true);
+                else
+                    sc.UpdateInitialBrentPosition(input, false);
                 sc.BalanceNaturalContracts();
             }
             else
@@ -221,6 +243,16 @@ namespace SpreadCounter
         private void ClearButton_Click(object sender, EventArgs e)
         {
             ClearTrades();
+        }
+
+        private void InputTrades_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ClearPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            // set clear variable
         }
     }
 }

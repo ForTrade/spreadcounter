@@ -35,22 +35,22 @@ namespace SpreadCounter
         private InputTrades inputtrades;
 
         /// <summary>
-        /// Represents the InputPosition class.  
-        /// </summary>
-        private InputPosition inputposition;
-
-        /// <summary>
         /// Represents the Butterfly class.  
         /// </summary>
         private Butterfly butterfly;
 
         #endregion
+
         #region Statics
 
         /// <summary>
         /// Set to keep InputTrades class open.  
         /// </summary>
         private static bool isTradesShown = false;
+
+        /// <summary>
+        /// Set to keep InputTrades class open.  
+        /// </summary>
         public static bool IsTradesShown
         {
             get { return isTradesShown; }
@@ -58,19 +58,13 @@ namespace SpreadCounter
         }
 
         /// <summary>
-        /// Set to keep InputPosition class open.  
-        /// </summary>
-        private static bool isPositionShown = false;
-        public static bool IsPositionShown
-        {
-            get { return isPositionShown; }
-            set { isPositionShown = value; }
-        }
-
-        /// <summary>
         /// Set to keep Butterfly class open.  
         /// </summary>
         private static bool isButterflyShown = false;
+        
+        /// <summary>
+        /// Set to keep Butterfly class open.  
+        /// </summary>
         public static bool IsButterflyShown
         {
             get { return isButterflyShown; }
@@ -78,6 +72,7 @@ namespace SpreadCounter
         }
 
         #endregion
+
         #region Structures
 
         /// <summary>
@@ -89,6 +84,7 @@ namespace SpreadCounter
         }
 
         #endregion
+        
         #region Classes
 
         /// <summary>
@@ -160,6 +156,7 @@ namespace SpreadCounter
         }
 
         #endregion
+
         #region Global Structure Instances
 
         /// <summary>
@@ -182,7 +179,13 @@ namespace SpreadCounter
         /// </summary>
         PositionStruct NaturalPosition;
 
+        /// <summary>
+        /// Holds the  Brent net, spread, and fly positions.  
+        /// </summary>
+        PositionStruct BrentPosition;
+
         #endregion
+
         #region TT Objects
 
         /// <summary>
@@ -196,7 +199,8 @@ namespace SpreadCounter
         private TTOrderSet m_orderSet = null;
 
         #endregion
-        #region List Objects
+
+        #region Fill List Objects
 
         /// <summary>
         /// List of individual crude fills.  
@@ -219,6 +223,14 @@ namespace SpreadCounter
         public List<Trade> NaturalFillList = new List<Trade>();
 
         /// <summary>
+        /// List of individual brent fills. 
+        /// </summary>
+        public List<Trade> BrentFillList = new List<Trade>();
+
+        #endregion
+
+        #region Combined List Objects
+        /// <summary>
         /// List of combined crude fills. 
         /// </summary>
         public List<Trade> CrudeCombinedFillList = new List<Trade>();
@@ -237,6 +249,15 @@ namespace SpreadCounter
         /// List of individual natural fills. 
         /// </summary>
         public List<Trade> NaturalCombinedFillList = new List<Trade>();
+
+        /// <summary>
+        /// List of individual brent fills. 
+        /// </summary>
+        public List<Trade> BrentCombinedFillList = new List<Trade>();
+
+        #endregion
+
+        #region Combined Net Objects
 
         /// <summary>
         /// List of combined crude fills. 
@@ -258,7 +279,12 @@ namespace SpreadCounter
         /// </summary>
         public List<NetTrade> NaturalNetList = new List<NetTrade>();
 
+        /// <summary>
+        /// List of individual brent fills. 
+        /// </summary>
+        public List<NetTrade> BrentNetList = new List<NetTrade>();
         #endregion
+
         #region Constructors
 
         /// <summary>
@@ -278,8 +304,8 @@ namespace SpreadCounter
 
         #endregion
 
-        private POPClient popClient = new POPClient();
-        private Hashtable msgs = new Hashtable();
+        //private POPClient popClient = new POPClient();
+        //private Hashtable msgs = new Hashtable();
 
         #region OnOrderFill Method
 
@@ -334,6 +360,11 @@ namespace SpreadCounter
                     case "NGT":
                         UpdateNaturalPosition(pFillObj);
                         BalanceNaturalContracts();
+                        break;
+                    case "BZ":
+                    case "BZT":
+                        UpdateBrentPosition(pFillObj);
+                        BalanceBrentContracts();
                         break;
                     default:
                         return;
@@ -500,6 +531,46 @@ namespace SpreadCounter
                     ngNetPosition.Text = "+" + NaturalPosition.net.ToString();
                 else
                     ngNetPosition.Text = NaturalPosition.net.ToString();
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region UpdateBrentPosition
+
+        /// <summary>
+        /// Processes and parses a new brent fill.
+        /// </summary>
+        /// <param name="pFillObj">The fill coming from TT.</param>
+        private void UpdateBrentPosition(TTFillObj pFillObj)
+        {
+            try
+            {
+                DateTime date;
+                Array fillData = (Array)pFillObj.get_Get("Buy,Sell,Contract");
+                int buy = (int)fillData.GetValue(0);
+                int sell = (int)fillData.GetValue(1);
+                string szContract = (string)fillData.GetValue(2);
+                string szContractDate = szContract.Split(' ')[1]; // Mar10
+                DateTime.TryParseExact(szContractDate, "MMMyy", new CultureInfo("en-US"), DateTimeStyles.None, out date);
+                BrentPosition.net += buy - sell;
+                Trade trade = new Trade(date, buy, sell);
+
+                // Add fill to list
+                BrentFillList.Add(trade);
+                BrentFillList.Sort(DateCompare);
+                CombineBrentTrade(BrentFillList);
+                PrintBrentTrade(BrentCombinedFillList);
+
+                // Calculate Net Position
+                if (BrentPosition.net > 0)
+                    bzNetPosition.Text = "+" + BrentPosition.net.ToString();
+                else
+                    bzNetPosition.Text = BrentPosition.net.ToString();
             }
             catch (System.Exception e)
             {
@@ -695,6 +766,52 @@ namespace SpreadCounter
 
         #endregion
 
+        #region UpdateInitialBrentPosition
+
+        /// <summary>
+        /// Processes and parses a manually input brent trade.
+        /// </summary>
+        /// <param name="trade">The fill coming from TT.</param>
+        /// <param name="clear">if set to <c>true</c> clears list and updates position else adds to existing position.</param>
+        public void UpdateInitialBrentPosition(Trade trade, bool clear)
+        {
+            try
+            {
+                // Add fill to list
+                if (clear)
+                {
+                    for (int i = 0; i < BrentFillList.Count; i++)
+                    {
+                        if (BrentFillList[i].Date.Month == trade.Date.Month && BrentFillList[i].Date.Year == trade.Date.Year)
+                            BrentFillList.Remove(BrentFillList[i]);
+                    }
+                    for (int i = 0; i < BrentCombinedFillList.Count; i++)
+                    {
+                        if (BrentCombinedFillList[i].Date.Month == trade.Date.Month && BrentCombinedFillList[i].Date.Year == trade.Date.Year)
+                            BrentCombinedFillList.Remove(BrentCombinedFillList[i]);
+                    }
+                }
+
+                BrentFillList.Add(trade);
+                BrentFillList.Sort(DateCompare);
+                CombineBrentTrade(BrentFillList);
+                PrintBrentTrade(BrentCombinedFillList);
+
+                // Calculate Net Position
+                BrentPosition.net = Convert.ToInt32(bzNetLongBox.Text) - Convert.ToInt32(bzNetShortBox.Text);
+                if (BrentPosition.net > 0)
+                    bzNetPosition.Text = "+" + BrentPosition.net.ToString();
+                else
+                    bzNetPosition.Text = BrentPosition.net.ToString();
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Combine Methods
@@ -790,6 +907,31 @@ namespace SpreadCounter
                     select new Trade { Date = g.Key, Buy = g.Sum(t => t.Buy), Sell = g.Sum(t => t.Sell) }
                 ).ToList();
                 NaturalFillList = new List<Trade>(NaturalCombinedFillList);
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region CombineBrentTrade
+
+        /// <summary>
+        /// Combines the brent trades.
+        /// </summary>
+        /// <param name="BrentFillList">The brent fill list.</param>
+        private void CombineBrentTrade(List<Trade> list)
+        {
+            try
+            {
+                BrentCombinedFillList = (
+                    from trade in list
+                    group trade by trade.Date.Date into g
+                    select new Trade { Date = g.Key, Buy = g.Sum(t => t.Buy), Sell = g.Sum(t => t.Sell) }
+                ).ToList();
+                BrentFillList = new List<Trade>(BrentCombinedFillList);
             }
             catch (System.Exception e)
             {
@@ -1047,6 +1189,67 @@ namespace SpreadCounter
 
         #endregion
 
+        #region PrintBrentTrade
+
+        /// <summary>
+        /// Prints the brent trade.
+        /// </summary>
+        /// <param name="fillList">The fill list.</param>
+        private void PrintBrentTrade(List<Trade> fillList)
+        {
+            int netposlong = 0, netposshort = 0;
+
+            var newList = fillList.Select(x => new NetTrade
+            {
+                Net = x.Buy - x.Sell,
+                Date = x.Date
+            }).ToList();
+
+            brentGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(trade.Date.ToString("MMMyy"));
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(trade.Date.ToString("MMMyy"));
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                brentGrid.Items.Add(item1);
+            }
+
+            foreach (NetTrade trade in newList)
+            {
+                if (trade.Net > 0)
+                {
+                    netposlong += trade.Net;
+                }
+                else if (trade.Net < 0)
+                {
+                    netposshort -= trade.Net;
+                }
+            }
+            bzNetLongBox.Text = netposlong.ToString();
+            bzNetShortBox.Text = netposshort.ToString();
+        }
+
+        #endregion
+
         #endregion
 
         #region Balance Contract Methods
@@ -1284,6 +1487,63 @@ namespace SpreadCounter
 
         #endregion
 
+        #region BalanceBrentContracts
+
+        /// <summary>
+        /// Balances the brent contracts.
+        /// </summary>
+        public void BalanceBrentContracts()
+        {
+            if (bzNetPosition.Text == "N/A" || bzNetPosition.Text == "" || BrentCombinedFillList.Count == 1)
+            {
+                return;
+            }
+
+            try
+            {
+                int monthIndex;
+                int optionQty;
+
+                optionQty = Convert.ToInt32(ngNetPosition.Text);
+                monthIndex = GetMonthIndex(ngOptionNetComboBox.Text);
+                List<Trade> balancedList = new List<Trade>(BrentCombinedFillList);
+                if (bzNetPosition.Text != "0")
+                {
+                    if (monthIndex < balancedList[0].Date.Month)
+                    {
+                        bzSpreadPosition.Text = "N/A";
+                        return;
+                    }
+                }
+                var newList = balancedList.Select(x => new Trade
+                {
+                    Buy = x.Buy > x.Sell ? x.Buy - x.Sell : 0,
+                    Sell = x.Buy < x.Sell ? x.Sell - x.Buy : 0,
+                    Date = x.Date
+                }).ToList();
+
+                if (optionQty > 0)
+                {
+                    (from trade in newList
+                     where trade.Date.Month == monthIndex
+                     select trade).ToList().ForEach(trade => trade.Sell += optionQty);
+                }
+                else if (optionQty < 0)
+                {
+                    (from trade in newList
+                     where trade.Date.Month == monthIndex
+                     select trade).ToList().ForEach(trade => trade.Buy -= optionQty);
+                }
+
+                CalculateBrentSpreadCount(newList);
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
         #endregion
 
         #region Calculate Spread Methods
@@ -1525,6 +1785,64 @@ namespace SpreadCounter
 
         #endregion
 
+        #region CalculateBrentSpreadCount
+
+        /// <summary>
+        /// Calculates the brent spread count.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        private void CalculateBrentSpreadCount(List<Trade> list)
+        {
+            int spreadcount = 0;
+            List<NetTrade> spreadlist = new List<NetTrade>();
+            bzSpreadPosition.Clear();
+
+            var netList = list.Select(x => new NetTrade
+            {
+                Net = x.Buy - x.Sell,
+                Date = x.Date
+            }).ToList();
+
+            NetTrade prev = netList.First();
+            List<NetTrade> result = new List<NetTrade> { prev };
+            foreach (NetTrade trade in netList.Skip(1))
+            {
+                DateTime month = prev.Date;
+                while (true)
+                {
+                    month = month.AddMonths(1);
+                    if (month >= trade.Date)
+                    {
+                        break;
+                    }
+                    result.Add(new NetTrade { Date = month, Net = 0 });
+                }
+                result.Add(trade);
+                prev = trade;
+            }
+
+            spreadlist.Add(result[0]);
+            for (int i = 0, total = result[0].Net; i < result.Count - 1; i++)
+            {
+                total += result[i + 1].Net;
+                spreadlist.Add(new NetTrade(result[i + 1].Date, total));
+            }
+
+            for (int i = 0; i < spreadlist.Count; i++)
+            {
+                spreadcount += spreadlist[i].Net;
+            }
+
+            BrentPosition.spread = spreadcount;
+            if (BrentPosition.spread > 0)
+                bzSpreadPosition.Text = "+" + spreadcount.ToString();
+            else
+                bzSpreadPosition.Text = spreadcount.ToString();
+            BalanceBrentSpreads(result);
+        }
+
+        #endregion
+
         #endregion
 
         #region Balance Spread Methods
@@ -1707,6 +2025,50 @@ namespace SpreadCounter
 
         #endregion
 
+        #region BalanceBrentSpreads
+
+        /// <summary>
+        /// Balances the brent spreads.
+        /// </summary>
+        /// <param name="spreadlist">The spreadlist.</param>
+        private void BalanceBrentSpreads(List<NetTrade> spreadlist)
+        {
+            try
+            {
+                if (bzNetPosition.Text == "N/A" || bzNetPosition.Text == "")
+                {
+                    return;
+                }
+
+                int monthIndex;
+                int optionQty;
+
+                optionQty = Convert.ToInt32(bzSpreadPosition.Text);
+                monthIndex = GetMonthIndex(bzOptionSpreadComboBox.Text);
+                if (monthIndex < spreadlist[0].Date.Month)
+                {
+                    bzFlyPosition.Text = "N/A";
+                    return;
+                }
+
+                (from trade in spreadlist
+                 where trade.Date.Month == monthIndex
+                 select trade).ToList().ForEach(trade => trade.Net -= optionQty);
+                (from trade in spreadlist
+                 where trade.Date.Month == monthIndex + 1
+                 select trade).ToList().ForEach(trade => trade.Net += optionQty);
+
+                CalculateBrentFlyCount(spreadlist);
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+        }
+
+        #endregion
+
         #endregion
 
         #region Calculate Fly Methods
@@ -1872,6 +2234,48 @@ namespace SpreadCounter
                     ngFlyPosition.Text = "+" + flyposition.ToString();
                 else
                     ngFlyPosition.Text = flyposition.ToString();
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region CalculateBrentFlyCount
+
+        /// <summary>
+        /// Calculates the brent fly count.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        private void CalculateBrentFlyCount(List<NetTrade> list)
+        {
+            try
+            {
+                List<NetTrade> flylist = new List<NetTrade>();
+                int flyposition = 0;
+
+                bzFlyPosition.Clear();
+
+                flylist.Add(list[0]);
+                for (int i = 0; i < list.Count - 2; i++)
+                {
+                    list[i + 1].Net += 2 * list[i].Net;
+                    list[i + 2].Net -= list[i].Net;
+                    flylist.Add(new NetTrade(list[i + 1].Date, list[i + 1].Net));
+                }
+
+                for (int i = 0; i < flylist.Count; i++)
+                {
+                    flyposition += flylist[i].Net;
+                }
+
+                BrentPosition.fly = flyposition;
+                if (BrentPosition.fly > 0)
+                    bzFlyPosition.Text = "+" + flyposition.ToString();
+                else
+                    bzFlyPosition.Text = flyposition.ToString();
             }
             catch (System.Exception e)
             {
@@ -2320,178 +2724,177 @@ namespace SpreadCounter
         //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
         //    return response.GetResponseStream();
         //}
+       
+        //private void LoadCsvData()
+        //{
+        //    #region Deprecated
+        //    //openFD.Title = "Load Csv File";
+        //    //openFD.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        //    //openFD.FileName = "";
+        //    //openFD.Filter = "CSV File|*.csv";
+        //    //if (openFD.ShowDialog() != DialogResult.Cancel)
+        //    //    ReadCsv(openFD.FileName);
+
+        //    // query csv from email
+        //    //QueryEmail();
+        //    //ParseFtpCsv();
+        //    #endregion
+
+        //    // query csv from sftp
+        //    string path = null;
+        //    ClearAll();
+        //    if (QueryFtp(out path)) ParseFtpCsv(path);
+        //}
+        //private bool QueryFtp(out string lpath)
+        //{
+        //    JSch jsch = new JSch();
+
+        //    string host = "sfile.mfglobal.com";
+        //    string user = "sftp_PioneerGroup";
+        //    string rfile = DateTime.Now.ToString("yyyyMMdd") + "midaspos.txt";
+        //    lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
+
+        //    // Compute salted hash
+        //    // System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+        //    // passwordtextBox.Text = SimpleHash.ComputeHash("*u+aD5Pe","SHA512",encoding.GetBytes("somesalt"));
+
+        //    // Use Password Hash
+        //    string passwordHashSha512 = System.Configuration.ConfigurationSettings.AppSettings["passwordhash"];
+        //    if (!SimpleHash.VerifyHash(passwordTextBox.Text, "SHA512", passwordHashSha512))
+        //    {
+        //        TopMostMessageBox.Show("Invalid Password", "Error");
+        //        return false;
+        //    }
+
+        //    MessageBoxThread mbox = new MessageBoxThread();
+        //    Thread mboxthread = new Thread(new ThreadStart(mbox.TimedMessageBox));
+        //    mboxthread.Start();
+
+        //    Session session = jsch.getSession(user, host, 22);
+        //    session.setPassword(passwordTextBox.Text);
+        //    session.connect();
+        //    Channel channel = session.openChannel("sftp");
+        //    channel.connect();
+        //    ChannelSftp c = (ChannelSftp)channel;
+
+        //    try
+        //    {
+        //        c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
+        //    }
+        //    catch
+        //    {
+        //        try
+        //        {
+        //            rfile = DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "midaspos.txt";
+        //            lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
+        //            c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
+        //        }
+        //        catch
+        //        {
+        //            try
+        //            {
+        //                rfile = DateTime.Now.AddDays(-2).ToString("yyyyMMdd") + "midaspos.txt";
+        //                lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
+        //                c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
+        //            }
+        //            catch
+        //            {
+        //                try
+        //                {
+        //                    rfile = DateTime.Now.AddDays(-3).ToString("yyyyMMdd") + "midaspos.txt";
+        //                    lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
+        //                    c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
+        //                }
+        //                catch (SftpException e)
+        //                {
+        //                    MessageBox.Show(e.message);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    mboxthread.Join();
+        //    mboxthread.Abort();
+        //    session.disconnect();
+        //    return true;
+        //}
+        //private void ParseFtpCsv(string lpath)
+        //{
+        //    try
+        //    {
+        //        using (CsvReader csv = new CsvReader(new StreamReader(lpath), false))
+        //        {
+        //            while (csv.ReadNextRecord())
+        //            {
+        //                string account = csv[3];
+        //                if (account != accountComboBox.Text)
+        //                    continue;
+        //                Trade trade = new Trade();
+        //                int net = (int)Convert.ToDecimal(csv[18]);
+        //                string monthyear = string.Concat(csv[33].Split(' ')[0], csv[33].Split(' ')[1]);
+        //                string contract = csv[5];
+        //                DateTime date;
+        //                DateTime.TryParseExact(monthyear, "MMMyy", new CultureInfo("en-US"), DateTimeStyles.None, out date);
+        //                if (csv[17] == "1")
+        //                {
+        //                    trade = new Trade(date, net, 0);
+        //                }
+        //                else if (csv[17] == "2")
+        //                {
+        //                    trade = new Trade(date, 0, net);
+        //                }
+        //                else if (net == 0)
+        //                {
+        //                    trade = new SpreadCounter.Trade(date, 0, 0);
+        //                }
+        //                if (contract == "CU")
+        //                    UpdateInitialCrudePosition(trade, false);
+        //                else if (contract == "RB")
+        //                    UpdateInitialGasPosition(trade, false);
+        //                else if (contract == "HO")
+        //                    UpdateInitialHeatPosition(trade, false);
+        //                else if (contract == "NG")
+        //                    UpdateInitialNaturalPosition(trade, false);
+        //                else
+        //                    continue;
+        //                // gold or currencies
+        //            }
+        //        }
+        //        File.Delete(lpath);
+        //        string[] digits = Regex.Split(lpath, @"\D+");
+        //        DateTime dateout;
+        //        DateTime.TryParseExact(digits[1], "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out dateout);
+        //        MessageBoxEx.Show("Position from close of " + dateout.DayOfWeek + ", " + dateout.ToString("MMMM") + " " + dateout.Day + " " + dateout.Year.ToString(), "Data Retrieved", 5000);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        MessageBox.Show(e.Message);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// My Policy
+        ///// </summary>
+        //public class MyPolicy : ICertificatePolicy
+        //{
+        //    /// <summary>
+        //    /// Validates a server certificate.
+        //    /// </summary>
+        //    /// <param name="srvPoint">The <see cref="T:System.Net.ServicePoint"/> that will use the certificate.</param>
+        //    /// <param name="certificate">The certificate to validate.</param>
+        //    /// <param name="request">The request that received the certificate.</param>
+        //    /// <param name="certificateProblem">The problem that was encountered when using the certificate.</param>
+        //    /// <returns>
+        //    /// true if the certificate should be honored; otherwise, false.
+        //    /// </returns>
+        //    public bool CheckValidationResult(ServicePoint srvPoint,
+        //      X509Certificate certificate, WebRequest request,
+        //      int certificateProblem)
+        //    {
+        //        //Return True to force the certificate to be accepted.
+        //        return true;
+        //    }
+        //}
         #endregion
-
-        private void LoadCsvData()
-        {
-            #region Deprecated
-            //openFD.Title = "Load Csv File";
-            //openFD.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            //openFD.FileName = "";
-            //openFD.Filter = "CSV File|*.csv";
-            //if (openFD.ShowDialog() != DialogResult.Cancel)
-            //    ReadCsv(openFD.FileName);
-
-            // query csv from email
-            //QueryEmail();
-            //ParseFtpCsv();
-            #endregion
-
-            // query csv from sftp
-            string path = null;
-            ClearAll();
-            if (QueryFtp(out path)) ParseFtpCsv(path);
-        }
-        private bool QueryFtp(out string lpath)
-        {
-            JSch jsch = new JSch();
-
-            string host = "sfile.mfglobal.com";
-            string user = "sftp_PioneerGroup";
-            string rfile = DateTime.Now.ToString("yyyyMMdd") + "midaspos.txt";
-            lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
-
-            // Compute salted hash
-            // System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-            // passwordtextBox.Text = SimpleHash.ComputeHash("*u+aD5Pe","SHA512",encoding.GetBytes("somesalt"));
-
-            // Use Password Hash
-            string passwordHashSha512 = System.Configuration.ConfigurationSettings.AppSettings["passwordhash"];
-            if (!SimpleHash.VerifyHash(passwordTextBox.Text, "SHA512", passwordHashSha512))
-            {
-                TopMostMessageBox.Show("Invalid Password", "Error");
-                return false;
-            }
-
-            MessageBoxThread mbox = new MessageBoxThread();
-            Thread mboxthread = new Thread(new ThreadStart(mbox.TimedMessageBox));
-            mboxthread.Start();
-
-            Session session = jsch.getSession(user, host, 22);
-            session.setPassword(passwordTextBox.Text);
-            session.connect();
-            Channel channel = session.openChannel("sftp");
-            channel.connect();
-            ChannelSftp c = (ChannelSftp)channel;
-
-            try
-            {
-                c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
-            }
-            catch
-            {
-                try
-                {
-                    rfile = DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "midaspos.txt";
-                    lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
-                    c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
-                }
-                catch
-                {
-                    try
-                    {
-                        rfile = DateTime.Now.AddDays(-2).ToString("yyyyMMdd") + "midaspos.txt";
-                        lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
-                        c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            rfile = DateTime.Now.AddDays(-3).ToString("yyyyMMdd") + "midaspos.txt";
-                            lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
-                            c.get(rfile, lpath, null, ChannelSftp.OVERWRITE);
-                        }
-                        catch (SftpException e)
-                        {
-                            MessageBox.Show(e.message);
-                        }
-                    }
-                }
-            }
-            mboxthread.Join();
-            mboxthread.Abort();
-            session.disconnect();
-            return true;
-        }
-        private void ParseFtpCsv(string lpath)
-        {
-            try
-            {
-                using (CsvReader csv = new CsvReader(new StreamReader(lpath), false))
-                {
-                    while (csv.ReadNextRecord())
-                    {
-                        string account = csv[3];
-                        if (account != accountComboBox.Text)
-                            continue;
-                        Trade trade = new Trade();
-                        int net = (int)Convert.ToDecimal(csv[18]);
-                        string monthyear = string.Concat(csv[33].Split(' ')[0], csv[33].Split(' ')[1]);
-                        string contract = csv[5];
-                        DateTime date;
-                        DateTime.TryParseExact(monthyear, "MMMyy", new CultureInfo("en-US"), DateTimeStyles.None, out date);
-                        if (csv[17] == "1")
-                        {
-                            trade = new Trade(date, net, 0);
-                        }
-                        else if (csv[17] == "2")
-                        {
-                            trade = new Trade(date, 0, net);
-                        }
-                        else if (net == 0)
-                        {
-                            trade = new SpreadCounter.Trade(date, 0, 0);
-                        }
-                        if (contract == "CU")
-                            UpdateInitialCrudePosition(trade, false);
-                        else if (contract == "RB")
-                            UpdateInitialGasPosition(trade, false);
-                        else if (contract == "HO")
-                            UpdateInitialHeatPosition(trade, false);
-                        else if (contract == "NG")
-                            UpdateInitialNaturalPosition(trade, false);
-                        else
-                            continue;
-                        // gold or currencies
-                    }
-                }
-                File.Delete(lpath);
-                string[] digits = Regex.Split(lpath, @"\D+");
-                DateTime dateout;
-                DateTime.TryParseExact(digits[1], "yyyyMMdd", new CultureInfo("en-US"), DateTimeStyles.None, out dateout);
-                MessageBoxEx.Show("Position from close of " + dateout.DayOfWeek + ", " + dateout.ToString("MMMM") + " " + dateout.Day + " " + dateout.Year.ToString(), "Data Retrieved", 5000);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// My Policy
-        /// </summary>
-        public class MyPolicy : ICertificatePolicy
-        {
-            /// <summary>
-            /// Validates a server certificate.
-            /// </summary>
-            /// <param name="srvPoint">The <see cref="T:System.Net.ServicePoint"/> that will use the certificate.</param>
-            /// <param name="certificate">The certificate to validate.</param>
-            /// <param name="request">The request that received the certificate.</param>
-            /// <param name="certificateProblem">The problem that was encountered when using the certificate.</param>
-            /// <returns>
-            /// true if the certificate should be honored; otherwise, false.
-            /// </returns>
-            public bool CheckValidationResult(ServicePoint srvPoint,
-              X509Certificate certificate, WebRequest request,
-              int certificateProblem)
-            {
-                //Return True to force the certificate to be accepted.
-                return true;
-            }
-        }
-
 
         #region GetMonthIndex
 
@@ -2656,6 +3059,26 @@ namespace SpreadCounter
         }
 
         /// <summary>
+        /// Clears the brent position.
+        /// </summary>
+        private void ClearBrentPosition()
+        {
+            brentGrid.Items.Clear();
+            BrentFillList.Clear();
+            BrentCombinedFillList.Clear();
+            BrentPosition.net = 0;
+            BrentPosition.spread = 0;
+            BrentPosition.fly = 0;
+            bzNetLongBox.Clear();
+            bzNetPosition.Clear();
+            bzNetShortBox.Clear(); ;
+            bzSpreadPosition.Clear();
+            bzFlyPosition.Clear();
+            bzOptionNetComboBox.SelectedIndex = -1;
+            bzOptionSpreadComboBox.SelectedIndex = -1;
+        }
+
+        /// <summary>
         /// Clears all position data.
         /// </summary>
         private void ClearAll()
@@ -2664,6 +3087,7 @@ namespace SpreadCounter
             ClearGasPosition();
             ClearHeatPosition();
             ClearNaturalPosition();
+            ClearBrentPosition();
         }
 
         #endregion
@@ -2741,13 +3165,33 @@ namespace SpreadCounter
         }
 
         /// <summary>
-        /// Handles the SelectedIndexChanged event of the ngOptionSpreadComboBox control.
+        /// Handles the SelectedIndexChanged event of the hoOptionSpreadComboBox control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void ngOptionSpreadComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             BalanceNaturalContracts();
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the bzOptionNetComboBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void bzOptionNetComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BalanceBrentContracts();
+        }
+        
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the hoOptionSpreadComboBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void bzOptionSpreadComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BalanceBrentContracts();
         }
 
         /// <summary>
@@ -2812,13 +3256,23 @@ namespace SpreadCounter
         }
 
         /// <summary>
+        /// Handles the Click event of the BrentClearButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void BrentClearButton_Click(object sender, EventArgs e)
+        {
+            ClearBrentPosition();
+        }
+
+        /// <summary>
         /// Handles the Click event of the LoadFile control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void LoadFile_Click(object sender, EventArgs e)
         {
-            LoadCsvData();
+            //Load the FC Stone data when we get its
         }
 
         /// <summary>
@@ -2844,7 +3298,11 @@ namespace SpreadCounter
             naturalGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
             naturalGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
 
-            accountComboBox.Text = "78288";
+            brentGrid.Columns.Add("Long", 50, HorizontalAlignment.Center);
+            brentGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
+            brentGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
+
+            accountComboBox.Text = "PAXY81";
             //usernameBox.Text = "uziinc";
             //passwordBox.Text = "JGay123*";
         }
@@ -2872,27 +3330,38 @@ namespace SpreadCounter
             inputtrades.Show();
             inputtrades.BringToFront();
         }
-
-        private void inputPositionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!IsPositionShown)
-            {
-                inputposition = new InputPosition(this);
-                IsPositionShown = true;
-            }
-            inputposition.Show();
-            inputposition.BringToFront();
-        }
+        
         private void SpreadCounter_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
             {
-                LoadCsvData();
+                //Load FC Stone data when we get it
             }
         }
+       
         private void clearAllToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             ClearAll();
+        }
+
+        private void naturalGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void brentGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clSpreadPosition_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void accountComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
     public class MessageBoxThread

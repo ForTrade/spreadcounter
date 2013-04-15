@@ -107,6 +107,11 @@ namespace SpreadCounter
                 sc.UpdateInitialNaturalPosition(input, true);
                 sc.BalanceNaturalContracts();
             }
+            else if (ContractComboBox.Text == "BZ")
+            {
+                sc.UpdateInitialBrentPosition(input, true);
+                sc.BalanceBrentContracts();
+            }
             else
                 return;
 
@@ -228,6 +233,21 @@ namespace SpreadCounter
         private void ClearButton_Click(object sender, EventArgs e)
         {
             ClearTrades();
+        }
+
+        private void SummaryTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ContractComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InputPosition_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -39,7 +39,7 @@
             this.PositionTextBox = new System.Windows.Forms.TextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.SummaryTextBox = new System.Windows.Forms.RichTextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // YearTextBox
@@ -98,11 +98,13 @@
             "CL",
             "RB",
             "HO",
-            "NG"});
+            "NG",
+            "BZ"});
             this.ContractComboBox.Location = new System.Drawing.Point(12, 25);
             this.ContractComboBox.Name = "ContractComboBox";
             this.ContractComboBox.Size = new System.Drawing.Size(47, 21);
             this.ContractComboBox.TabIndex = 8;
+            this.ContractComboBox.SelectedIndexChanged += new System.EventHandler(this.ContractComboBox_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -158,15 +160,17 @@
             this.SummaryTextBox.TabIndex = 18;
             this.SummaryTextBox.TabStop = false;
             this.SummaryTextBox.Text = "";
+            this.SummaryTextBox.TextChanged += new System.EventHandler(this.SummaryTextBox_TextChanged);
             // 
-            // label5
+            // checkBox1
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(212, 89);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(79, 13);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "Enter 0 to clear";
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(212, 79);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(90, 17);
+            this.checkBox1.TabIndex = 20;
+            this.checkBox1.Text = "Clear Position";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // InputPosition
             // 
@@ -174,7 +178,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(297, 207);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.SummaryTextBox);
             this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.YearTextBox);
@@ -190,6 +194,7 @@
             this.Text = "Input Position";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputPosition_FormClosing);
+            this.Load += new System.EventHandler(this.InputPosition_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,6 +213,6 @@
         private System.Windows.Forms.TextBox PositionTextBox;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.RichTextBox SummaryTextBox;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
