@@ -3343,26 +3343,6 @@ namespace SpreadCounter
         {
             ClearAll();
         }
-
-        private void naturalGrid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void brentGrid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void clSpreadPosition_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void accountComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
     public class MessageBoxThread
     {

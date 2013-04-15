@@ -267,7 +267,6 @@ namespace SpreadCounter
             this.clSpreadPosition.TabIndex = 53;
             this.clSpreadPosition.TabStop = false;
             this.clSpreadPosition.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.clSpreadPosition.TextChanged += new System.EventHandler(this.clSpreadPosition_TextChanged);
             // 
             // label25
             // 
@@ -696,20 +695,6 @@ namespace SpreadCounter
             this.naturalGrid.TabStop = false;
             this.naturalGrid.UseCompatibleStateImageBehavior = false;
             this.naturalGrid.View = System.Windows.Forms.View.Details;
-            this.naturalGrid.SelectedIndexChanged += new System.EventHandler(this.naturalGrid_SelectedIndexChanged);
-            // 
-            // brentGrid
-            // 
-            this.brentGrid.FullRowSelect = true;
-            this.brentGrid.GridLines = true;
-            this.brentGrid.Location = new System.Drawing.Point(733, 59);
-            this.brentGrid.Name = "brentGrid";
-            this.brentGrid.Size = new System.Drawing.Size(173, 292);
-            this.brentGrid.TabIndex = 229;
-            this.brentGrid.TabStop = false;
-            this.brentGrid.UseCompatibleStateImageBehavior = false;
-            this.brentGrid.View = System.Windows.Forms.View.Details;
-            this.brentGrid.SelectedIndexChanged += new System.EventHandler(this.brentGrid_SelectedIndexChanged);
             // 
             // menuStrip1
             // 
@@ -735,14 +720,14 @@ namespace SpreadCounter
             // inputTradesToolStripMenuItem
             // 
             this.inputTradesToolStripMenuItem.Name = "inputTradesToolStripMenuItem";
-            this.inputTradesToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.inputTradesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.inputTradesToolStripMenuItem.Text = "Input Trades";
             this.inputTradesToolStripMenuItem.Click += new System.EventHandler(this.inputTradesToolStripMenuItem_Click);
             // 
             // butterflyChartToolStripMenuItem
             // 
             this.butterflyChartToolStripMenuItem.Name = "butterflyChartToolStripMenuItem";
-            this.butterflyChartToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.butterflyChartToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.butterflyChartToolStripMenuItem.Text = "Butterfly Chart";
             this.butterflyChartToolStripMenuItem.Click += new System.EventHandler(this.butterflyChartToolStripMenuItem_Click);
             // 
@@ -809,16 +794,6 @@ namespace SpreadCounter
             this.GasClearButton.UseVisualStyleBackColor = true;
             this.GasClearButton.Click += new System.EventHandler(this.GasClearButton_Click);
             // 
-            // BrentClearButton
-            // 
-            this.BrentClearButton.Location = new System.Drawing.Point(778, 362);
-            this.BrentClearButton.Name = "BrentClearButton";
-            this.BrentClearButton.Size = new System.Drawing.Size(75, 23);
-            this.BrentClearButton.TabIndex = 219;
-            this.BrentClearButton.Text = "Clear";
-            this.BrentClearButton.UseVisualStyleBackColor = true;
-            this.BrentClearButton.Click += new System.EventHandler(this.BrentClearButton_Click);
-            // 
             // openFD
             // 
             this.openFD.FileName = "openFileDialog1";
@@ -838,20 +813,43 @@ namespace SpreadCounter
             this.accountComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.accountComboBox.DropDownWidth = 121;
             this.accountComboBox.FormattingEnabled = true;
-            this.accountComboBox.Items.AddRange(new object[] {"PAXY81"});
+            this.accountComboBox.Items.AddRange(new object[] {
+            "PAXY81"});
             this.accountComboBox.Location = new System.Drawing.Point(107, 2);
             this.accountComboBox.Name = "accountComboBox";
             this.accountComboBox.Size = new System.Drawing.Size(83, 21);
             this.accountComboBox.TabIndex = 215;
-            this.accountComboBox.SelectedIndexChanged += new System.EventHandler(this.accountComboBox_SelectedIndexChanged);
             // 
             // passwordTextBox
             // 
+            this.passwordTextBox.AcceptsReturn = true;
             this.passwordTextBox.Location = new System.Drawing.Point(199, 3);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
             this.passwordTextBox.TabIndex = 216;
             this.passwordTextBox.UseSystemPasswordChar = true;
+            // 
+            // BrentClearButton
+            // 
+            this.BrentClearButton.Location = new System.Drawing.Point(778, 362);
+            this.BrentClearButton.Name = "BrentClearButton";
+            this.BrentClearButton.Size = new System.Drawing.Size(75, 23);
+            this.BrentClearButton.TabIndex = 219;
+            this.BrentClearButton.Text = "Clear";
+            this.BrentClearButton.UseVisualStyleBackColor = true;
+            this.BrentClearButton.Click += new System.EventHandler(this.BrentClearButton_Click);
+            // 
+            // brentGrid
+            // 
+            this.brentGrid.FullRowSelect = true;
+            this.brentGrid.GridLines = true;
+            this.brentGrid.Location = new System.Drawing.Point(733, 59);
+            this.brentGrid.Name = "brentGrid";
+            this.brentGrid.Size = new System.Drawing.Size(173, 292);
+            this.brentGrid.TabIndex = 229;
+            this.brentGrid.TabStop = false;
+            this.brentGrid.UseCompatibleStateImageBehavior = false;
+            this.brentGrid.View = System.Windows.Forms.View.Details;
             // 
             // bzSpreadPosition
             // 
