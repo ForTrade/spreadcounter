@@ -40,6 +40,7 @@ namespace SpreadCounter
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             SubmitTrade();
+            PositionTextBox.Focus();
         }
 
         /// <summary>
