@@ -109,6 +109,8 @@ namespace SpreadCounter
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -720,14 +722,14 @@ namespace SpreadCounter
             // inputTradesToolStripMenuItem
             // 
             this.inputTradesToolStripMenuItem.Name = "inputTradesToolStripMenuItem";
-            this.inputTradesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.inputTradesToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.inputTradesToolStripMenuItem.Text = "Input Trades";
             this.inputTradesToolStripMenuItem.Click += new System.EventHandler(this.inputTradesToolStripMenuItem_Click);
             // 
             // butterflyChartToolStripMenuItem
             // 
             this.butterflyChartToolStripMenuItem.Name = "butterflyChartToolStripMenuItem";
-            this.butterflyChartToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.butterflyChartToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.butterflyChartToolStripMenuItem.Text = "Butterfly Chart";
             this.butterflyChartToolStripMenuItem.Click += new System.EventHandler(this.butterflyChartToolStripMenuItem_Click);
             // 
@@ -800,7 +802,7 @@ namespace SpreadCounter
             // 
             // LoadFile
             // 
-            this.LoadFile.Location = new System.Drawing.Point(305, 1);
+            this.LoadFile.Location = new System.Drawing.Point(525, 0);
             this.LoadFile.Name = "LoadFile";
             this.LoadFile.Size = new System.Drawing.Size(133, 23);
             this.LoadFile.TabIndex = 2;
@@ -815,7 +817,7 @@ namespace SpreadCounter
             this.accountComboBox.FormattingEnabled = true;
             this.accountComboBox.Items.AddRange(new object[] {
             "PAXY81"});
-            this.accountComboBox.Location = new System.Drawing.Point(107, 2);
+            this.accountComboBox.Location = new System.Drawing.Point(271, 1);
             this.accountComboBox.Name = "accountComboBox";
             this.accountComboBox.Size = new System.Drawing.Size(83, 21);
             this.accountComboBox.TabIndex = 215;
@@ -823,7 +825,7 @@ namespace SpreadCounter
             // passwordTextBox
             // 
             this.passwordTextBox.AcceptsReturn = true;
-            this.passwordTextBox.Location = new System.Drawing.Point(199, 3);
+            this.passwordTextBox.Location = new System.Drawing.Point(419, 1);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
             this.passwordTextBox.TabIndex = 216;
@@ -983,11 +985,31 @@ namespace SpreadCounter
             this.label5.Text = "BZ";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(360, 5);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 13);
+            this.label8.TabIndex = 230;
+            this.label8.Text = "Password";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(218, 5);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(47, 13);
+            this.label10.TabIndex = 231;
+            this.label10.Text = "Account";
+            // 
             // SpreadCounter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(921, 505);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.BrentClearButton);
             this.Controls.Add(this.brentGrid);
             this.Controls.Add(this.bzSpreadPosition);
@@ -1148,6 +1170,8 @@ namespace SpreadCounter
         private ToolStripMenuItem clearToolStripMenuItem;
         private ToolStripMenuItem clearAllToolStripMenuItem;
         private TextBox passwordTextBox;
+        private Label label8;
+        private Label label10;
     }
 }
 
