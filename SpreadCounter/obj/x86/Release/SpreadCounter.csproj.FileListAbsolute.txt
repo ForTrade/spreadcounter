@@ -71,3 +71,4 @@ C:\Users\Addie\Documents\My Dropbox\Visual Studio 2010\Projects\SpreadCounter_2\
 C:\Users\Addie\Documents\My Dropbox\Visual Studio 2010\Projects\SpreadCounter_2\SpreadCounter\obj\x86\Release\SpreadCounter.Properties.Resources.resources
 C:\Users\Addie\Documents\My Dropbox\Visual Studio 2010\Projects\SpreadCounter_2\SpreadCounter\obj\x86\Release\SpreadCounter.csproj.GenerateResource.Cache
 C:\Users\Addie\Documents\My Dropbox\Visual Studio 2010\Projects\SpreadCounter_2\SpreadCounter\obj\x86\Release\SpreadCounter.InputTrades.resources
+C:\Users\Addie\Documents\My Dropbox\Visual Studio 2010\Projects\SpreadCounter_2\SpreadCounter\obj\x86\Release\SpreadCounter.Loading.resources

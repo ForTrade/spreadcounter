@@ -37,21 +37,33 @@ namespace SpreadCounter
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void SubmitButton_Click(object sender, EventArgs e)
+        private void BuyButton_Click(object sender, EventArgs e)
         {
-            SubmitTrade();
+            SubmitTrade(true);
+            PositionTextBox.Focus();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the SubmitButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void SellButton_Click(object sender, EventArgs e)
+        {
+            SubmitTrade(false);
             PositionTextBox.Focus();
         }
 
         /// <summary>
         /// Submits the trade.
         /// </summary>
-        private void SubmitTrade()
+        private void SubmitTrade(bool buy)
         {
             if (ContractComboBox.Text == "" ||
                 MonthComboBox.Text == "" ||
                 YearTextBox.Text == "" ||
                 PositionTextBox.Text == "" ||
+                PositionTextBox.Text == "0" ||
                 (YearTextBox.Text.Length != 2 && YearTextBox.Text.Length != 4))
             {
                 return;
@@ -64,24 +76,25 @@ namespace SpreadCounter
             DateTime dateobj;
             DateTime.TryParseExact(date, "MMMyy", new CultureInfo("en-US"), DateTimeStyles.None, out dateobj);
             int position = Convert.ToInt32(PositionTextBox.Text);
-            if (position > 0)
+            if (buy)
             {
                 string summarystring = String.Format("{0}\t{1}\t{2}{3}{4}{5}", "Long", PositionTextBox.Text, ContractComboBox.Text, MonthComboBox.Text, year, Environment.NewLine);
                 ColorText(summarystring, Color.Blue);
                 SummaryTextBox.AppendText(summarystring);
                 input = new SpreadCounter.Trade(dateobj, position, 0);
             }
-            else if (position < 0)
+            else
             {
                 string summarystring = String.Format("{0}\t{1}\t{2}{3}{4}{5}", "Short", PositionTextBox.Text, ContractComboBox.Text, MonthComboBox.Text, year, Environment.NewLine);
                 ColorText(summarystring, Color.Red);
                 SummaryTextBox.AppendText(summarystring);
-                input = new SpreadCounter.Trade(dateobj, 0, -position);
+                input = new SpreadCounter.Trade(dateobj, 0, position);
             }
             SummaryTextBox.SelectionStart = SummaryTextBox.Text.Length;
             SummaryTextBox.ScrollToCaret();
             PositionTextBox.Clear();
           
+            // Determine if checkbox is checked or not
             bool clear = false;
             if (clearPosition_checkBox.CheckState == CheckState.Checked)
                 clear = true;
@@ -201,18 +214,18 @@ namespace SpreadCounter
                 return year;
         }
 
-        /// <summary>
-        /// Handles the KeyDown event of the InputTrades control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        private void InputTrades_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyData == Keys.Enter)
-            {
-                SubmitTrade();
-            }
-        }
+        ///// <summary>
+        ///// Handles the KeyDown event of the InputTrades control.
+        ///// </summary>
+        ///// <param name="sender">The source of the event.</param>
+        ///// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
+        //private void InputTrades_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if (e.KeyData == Keys.Enter)
+        //    {
+        //        SubmitTrade();
+        //    }
+        //}
 
         /// <summary>
         /// Handles the FormClosing event of the InputTrades control.
@@ -234,16 +247,6 @@ namespace SpreadCounter
         private void ClearButton_Click(object sender, EventArgs e)
         {
             ClearTrades();
-        }
-
-        private void InputTrades_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ClearPosition_CheckedChanged(object sender, EventArgs e)
-        {
-            // set clear variable
         }
     }
 }

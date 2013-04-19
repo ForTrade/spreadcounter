@@ -22,7 +22,7 @@ namespace SpreadCounter
             this.settlement_button.Select();
             this.productBox.Text = "RB";
             this.monthBox.Text = "F";
-            this.yearBox.Text = "10";
+            this.yearBox.Text = "13";
             this.flyBox.Text = "1x";
         }
         private void Butterfly_FormClosing(object sender, FormClosingEventArgs e)

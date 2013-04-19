@@ -1,11 +1,12 @@
 ﻿//	SpreadCounter
-//	Copyright (c) 2010 Addie Bendory
+//	Copyright (c) 2013 Addie Bendory
 
+using LumenWorks.Framework.IO.Csv;
+using OpenPOP.POP3;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -15,8 +16,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using LumenWorks.Framework.IO.Csv;
-using OpenPOP.POP3;
 using Tamir.SharpSsh.jsch;
 using XTAPI;
 
@@ -38,6 +37,11 @@ namespace SpreadCounter
         /// Represents the Butterfly class.  
         /// </summary>
         private Butterfly butterfly;
+
+        /// <summary>
+        /// Represents the Loading class.  
+        /// </summary>
+        private Loading loading;
 
         #endregion
 
@@ -83,7 +87,14 @@ namespace SpreadCounter
             public int net, spread, fly;
         }
 
-        #endregion
+        #endregion 
+        
+        enum Fly
+        {
+	        Single,
+	        Double,
+	        Triple
+        };
         
         #region Classes
 
@@ -303,9 +314,6 @@ namespace SpreadCounter
         }
 
         #endregion
-
-        //private POPClient popClient = new POPClient();
-        //private Hashtable msgs = new Hashtable();
 
         #region OnOrderFill Method
 
@@ -943,7 +951,10 @@ namespace SpreadCounter
 
         #endregion
 
-        #region Print Methods
+
+        // TODO: Combine all of the print methods into one print method.  
+        // Pass in the commodity type and the Fly number as args
+        #region Print Trade
 
         #region PrintCrudeTrade
 
@@ -1251,6 +1262,534 @@ namespace SpreadCounter
         #endregion
 
         #endregion
+
+        #region Print Fly
+
+        #region PrintCrudeFly
+
+        /// <summary>
+        /// Prints the crude fly.
+        /// </summary>
+        /// <param name="fillList">The fill list.</param>
+        private void PrintCrudeFly(List<NetTrade> newList)
+        {
+            crudeFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Single);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                crudeFlyGrid.Items.Add(item1);
+            }
+        }
+
+        #endregion
+
+        #region PrintGasFly
+
+        /// <summary>
+        /// Prints the gas fly.
+        /// </summary>
+        /// <param name="fillList">The fill list.</param>
+        private void PrintGasFly(List<NetTrade> newList)
+        {
+            gasFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Single);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                gasFlyGrid.Items.Add(item1);
+            }
+
+            //foreach (NetTrade trade in newList)
+            //{
+            //    if (trade.Net > 0)
+            //    {
+            //        netposlong += trade.Net;
+            //    }
+            //    else if (trade.Net < 0)
+            //    {
+            //        netposshort -= trade.Net;
+            //    }
+            //}
+            //clNetLongBox.Text = netposlong.ToString();
+            //clNetShortBox.Text = netposshort.ToString();
+        }
+
+        #endregion
+
+        #region PrintHeatFly
+
+        /// <summary>
+        /// Prints the heat fly.
+        /// </summary>
+        /// <param name="fillList">The fill list.</param>
+        private void PrintHeatFly(List<NetTrade> newList)
+        {
+            heatFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Single);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                heatFlyGrid.Items.Add(item1);
+            }
+
+            //foreach (NetTrade trade in newList)
+            //{
+            //    if (trade.Net > 0)
+            //    {
+            //        netposlong += trade.Net;
+            //    }
+            //    else if (trade.Net < 0)
+            //    {
+            //        netposshort -= trade.Net;
+            //    }
+            //}
+            //clNetLongBox.Text = netposlong.ToString();
+            //clNetShortBox.Text = netposshort.ToString();
+        }
+
+        #endregion
+
+        #region PrintNaturalFly
+
+        /// <summary>
+        /// Prints the natural fly.
+        /// </summary>
+        /// <param name="fillList">The fill list.</param>
+        private void PrintNaturalFly(List<NetTrade> newList)
+        {
+            naturalFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Single);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                naturalFlyGrid.Items.Add(item1);
+            }
+
+            //foreach (NetTrade trade in newList)
+            //{
+            //    if (trade.Net > 0)
+            //    {
+            //        netposlong += trade.Net;
+            //    }
+            //    else if (trade.Net < 0)
+            //    {
+            //        netposshort -= trade.Net;
+            //    }
+            //}
+            //clNetLongBox.Text = netposlong.ToString();
+            //clNetShortBox.Text = netposshort.ToString();
+        }
+
+        #endregion
+
+        #region PrintBrentFly
+
+        /// <summary>
+        /// Prints the brent fly.
+        /// </summary>
+        /// <param name="fillList">The fill list.</param>
+        private void PrintBrentFly(List<NetTrade> newList)
+        {
+            brentFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Single);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                brentFlyGrid.Items.Add(item1);
+            }
+
+            //foreach (NetTrade trade in newList)
+            //{
+            //    if (trade.Net > 0)
+            //    {
+            //        netposlong += trade.Net;
+            //    }
+            //    else if (trade.Net < 0)
+            //    {
+            //        netposshort -= trade.Net;
+            //    }
+            //}
+            //clNetLongBox.Text = netposlong.ToString();
+            //clNetShortBox.Text = netposshort.ToString();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Print Double Fly
+
+        #region PrintCrudeDouble
+
+        private void PrintCrudeDoubleFly(List<NetTrade> newList)
+        {
+            crudeDoubleFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Double);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                crudeDoubleFlyGrid.Items.Add(item1);
+            }
+        }
+        #endregion
+
+        #region PrintGasDouble
+
+        private void PrintGasDouble(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #region PrintHeatDouble
+
+        private void PrintHeatDouble(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #region PrintNaturalDouble
+
+        private void PrintNaturalDouble(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #region PrintBrentDouble
+
+        private void PrintBrentDouble(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #endregion
+
+        #region Print Triple Fly
+
+        #region PrintCrudeTripleFly
+
+        private void PrintCrudeTripleFly(List<NetTrade> newList)
+        {
+            crudeTripleFlyGrid.Items.Clear();
+
+            foreach (NetTrade trade in newList)
+            {
+                ListViewItem item1 = new ListViewItem();
+                string fly = FlyDate(trade.Date.ToString("MMM"), Fly.Double);
+                string year = trade.Date.ToString("yy");
+                if (DateTime.Now.Year.ToString().TrimStart('2', '0') != year)
+                    fly += year;
+
+                if (trade.Net > 0)
+                {
+                    item1.ForeColor = Color.Blue;
+                    item1.Text = trade.Net.ToString();
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add("");
+                }
+                else if (trade.Net < 0)
+                {
+                    item1.ForeColor = Color.Red;
+                    item1.Text = "";
+                    item1.SubItems.Add(fly);
+                    item1.SubItems.Add((-trade.Net).ToString());
+                }
+                else if (trade.Net == 0)
+                {
+                    continue;
+                }
+
+                crudeTripleFlyGrid.Items.Add(item1);
+            }
+        }
+        #endregion
+
+        #region PrintGasTriple
+
+        private void PrintGasTriple(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #region PrintHeatTriple
+
+        private void PrintHeatTriple(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #region PrintNaturalTriplee
+
+        private void PrintNaturalTriple(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #region PrintBrentTriple
+
+        private void PrintBrentTriple(List<NetTrade> newList)
+        {
+
+        }
+        #endregion
+
+        #endregion
+
+        private string FlyDate(string date, Fly type)
+        {
+            switch (date)
+            {
+                case "Jan":
+                    if (type == Fly.Single)
+                        return "FGH";
+                    else if (type == Fly.Double)
+                        return "FGHJ";
+                    else if (type == Fly.Triple)
+                        return "FGHJK";
+                    else return date;
+                case "Feb": 
+                    if (type == Fly.Single)
+                        return "GHJ";
+                    else if (type == Fly.Double)
+                        return "GHJK";
+                    else if (type == Fly.Triple)
+                        return "GHJKM";
+                    else return date;
+                case "Mar":
+                    if (type == Fly.Single)
+                        return "HJK";
+                    else if (type == Fly.Double)
+                        return "HJKM";
+                    else if (type == Fly.Triple)
+                        return "HJKMN";
+                    else return date;
+                case "Apr":
+                    if (type == Fly.Single)
+                        return "JKM";
+                    else if (type == Fly.Double)
+                        return "JKMN";
+                    else if (type == Fly.Triple)
+                        return "JKMNQ";
+                    else return date;
+                case "May":
+                    if (type == Fly.Single)
+                        return "KMN";
+                    else if (type == Fly.Double)
+                        return "KMNQ";
+                    else if (type == Fly.Triple)
+                        return "KMNQU";
+                    else return date;
+                case "Jun":
+                    if (type == Fly.Single)
+                        return "MNQ";
+                    else if (type == Fly.Double)
+                        return "MNQU";
+                    else if (type == Fly.Triple)
+                        return "MNQUV";
+                    else return date;
+                case "Jul":
+                    if (type == Fly.Single)
+                        return "NQU";
+                    else if (type == Fly.Double)
+                        return "NQUV";
+                    else if (type == Fly.Triple)
+                        return "NQUVX";
+                    else return date;
+                case "Aug":
+                    if (type == Fly.Single)
+                        return "QUV";
+                    else if (type == Fly.Double)
+                        return "QUVX";
+                    else if (type == Fly.Triple)
+                        return "QUVXZ";
+                    else return date;
+                case "Sep":
+                    if (type == Fly.Single)
+                        return "UVX";
+                    else if (type == Fly.Double)
+                        return "UVXZ";
+                    else if (type == Fly.Triple)
+                        return "UVXZF";
+                    else return date;
+                case "Oct":
+                    if (type == Fly.Single)
+                        return "VXZ";
+                    else if (type == Fly.Double)
+                        return "VXZF";
+                    else if (type == Fly.Triple)
+                        return "VXZFG";
+                    else return date;
+                case "Nov":
+                    if (type == Fly.Single)
+                        return "XZF";
+                    else if (type == Fly.Double)
+                        return "XZFG";
+                    else if (type == Fly.Triple)
+                        return "XZFGH";
+                    else return date;
+                case "Dec":
+                    if (type == Fly.Single)
+                        return "ZFG";
+                    else if (type == Fly.Double)
+                        return "ZFGH";
+                    else if (type == Fly.Triple)
+                        return "ZFGHJ";
+                    else return date;
+                default:
+                    return "XXX";
+            }
+        }
 
         #region Balance Contract Methods
 
@@ -1599,10 +2138,12 @@ namespace SpreadCounter
             }
 
             CrudePosition.spread = spreadcount;
+            
             if (CrudePosition.spread > 0)
                 clSpreadPosition.Text = "+" + spreadcount.ToString();
             else
                 clSpreadPosition.Text = spreadcount.ToString();
+            
             BalanceCrudeSpreads(result);
         }
 
@@ -1876,6 +2417,7 @@ namespace SpreadCounter
                 (from trade in spreadlist
                  where trade.Date.Month == monthIndex
                  select trade).ToList().ForEach(trade => trade.Net -= optionQty);
+                
                 (from trade in spreadlist
                  where trade.Date.Month == monthIndex + 1
                  select trade).ToList().ForEach(trade => trade.Net += optionQty);
@@ -2102,10 +2644,14 @@ namespace SpreadCounter
                 }
 
                 CrudePosition.fly = flyposition;
+
                 if (CrudePosition.fly > 0)
                     clFlyPosition.Text = "+" + flyposition.ToString();
                 else
                     clFlyPosition.Text = flyposition.ToString();
+                
+                PrintCrudeFly(flylist);
+                CalculateCrudeDoubleFlyCount(flylist);
             }
             catch (System.Exception e)
             {
@@ -2142,7 +2688,7 @@ namespace SpreadCounter
                 {
                     flyposition += flylist[i].Net;
                 }
-
+                PrintGasFly(flylist);
                 GasPosition.fly = flyposition;
                 if (GasPosition.fly > 0)
                     rbFlyPosition.Text = "+" + flyposition.ToString();
@@ -2185,7 +2731,7 @@ namespace SpreadCounter
                 {
                     flyposition += flylist[i].Net;
                 }
-
+                PrintHeatFly(flylist);
                 HeatPosition.fly = flyposition;
                 if (HeatPosition.fly > 0)
                     hoFlyPosition.Text = "+" + flyposition.ToString();
@@ -2228,7 +2774,7 @@ namespace SpreadCounter
                 {
                     flyposition += flylist[i].Net;
                 }
-
+                PrintNaturalFly(flylist);
                 NaturalPosition.fly = flyposition;
                 if (NaturalPosition.fly > 0)
                     ngFlyPosition.Text = "+" + flyposition.ToString();
@@ -2270,7 +2816,7 @@ namespace SpreadCounter
                 {
                     flyposition += flylist[i].Net;
                 }
-
+                PrintBrentFly(flylist);
                 BrentPosition.fly = flyposition;
                 if (BrentPosition.fly > 0)
                     bzFlyPosition.Text = "+" + flyposition.ToString();
@@ -2287,491 +2833,131 @@ namespace SpreadCounter
 
         #endregion
 
-        #region Deprecated Methods
-        //static private string EncodeTo64(string toEncode)
-        //{
-        //    byte[] toEncodeAsBytes
-        //          = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
-        //    string returnValue
-        //          = System.Convert.ToBase64String(toEncodeAsBytes);
-        //    return returnValue;
-        //}
-        //static private string DecodeFrom64(string encodedData)
-        //{
-        //    byte[] encodedDataAsBytes
-        //        = System.Convert.FromBase64String(encodedData);
-        //    string returnValue =
-        //       System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
-        //    return returnValue;
-        //}
-        //private void QueryEmail()
-        //{
-        //    FileStream fs = null;
-        //    Utility.Log = true;
-        //    popClient.Disconnect();
-        //    popClient.Connect("pop.gmail.com", 995, true);
-        //    popClient.Authenticate(usernameBox.Text + "@gmail.com", passwordBox.Text);
-        //    int Count = popClient.GetMessageCount();
+        #region Calculate Double Fly
 
-        //    for (int i = Count; i >= 1; i -= 1)
-        //    {
-        //        OpenPOP.MIMEParser.Message m = popClient.GetMessage(i, false);
-        //        OpenPOP.MIMEParser.Attachment att = m.GetAttachment(m.AttachmentCount - 1);
-        //        if (m != null)
-        //        {
-        //            if (DateTime.Now.DayOfWeek == DayOfWeek.Tuesday
-        //             || DateTime.Now.DayOfWeek == DayOfWeek.Wednesday
-        //             || DateTime.Now.DayOfWeek == DayOfWeek.Thursday
-        //             || DateTime.Now.DayOfWeek == DayOfWeek.Friday
-        //             || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
-        //            {
-        //                if (m.Subject == DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "midaspos.txt")
-        //                {
-        //                    fs = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "midaspos.csv");
-        //                    byte[] da;
-        //                    da = att.DecodedAttachment;
-        //                    fs.Write(da, 0, da.Length);
-        //                    fs.Close();
-        //                }
-        //            }
-        //            else if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
-        //            {
-        //                if (m.Subject == DateTime.Now.AddDays(-2).ToString("yyyyMMdd") + "midaspos.txt")
-        //                {
-        //                    fs = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "midaspos.csv");
-        //                    byte[] da;
-        //                    da = att.DecodedAttachment;
-        //                    fs.Write(da, 0, da.Length);
-        //                    fs.Close();
-        //                }
-        //            }
-        //            else if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
-        //            {
-        //                if (m.Subject == DateTime.Now.AddDays(-3).ToString("yyyyMMdd") + "midaspos.txt")
-        //                {
-        //                    fs = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + DateTime.Now.AddDays(-1).ToString("yyyyMMdd") + "midaspos.csv");
-        //                    byte[] da;
-        //                    da = att.DecodedAttachment;
-        //                    fs.Write(da, 0, da.Length);
-        //                    fs.Close();
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            //node=listMessages.Nodes.Add("(wrong email)");
-        //        }
-        //        //node.Tag="msg"+i.ToString();
-        //        //popClient.DeleteMessage(i);
-        //    }
-        //    //MessageBox.Show(this, "mail received!");
-        //}
-        //#region ReadCSV
-        ///// <summary>
-        ///// Reads and parses a CSV file.
-        ///// </summary>
-        //private void ReadCsv()
-        //{
-        //    ClearAll();
-        //    //CookieContainer cookieContainer = new CookieContainer();
-        //    //ServicePointManager.CertificatePolicy = new MyPolicy();
-        //    //cookieContainer = ConnectEmidas();
-        //    //// Hack to get cookie value
-        //    //cookieContainer = AuthenticateEmidas(cookieContainer);
-        //    //cookieContainer = SendQuery(cookieContainer);
-        //    //cookieContainer = GetNetPosition(cookieContainer);
-        //    //Stream strm1 = GetCsvFile(cookieContainer);
+        #region CalculateCrudeDoubleFlyCount
 
-        //    //string url = "https://www3.emidas.com/users/" + usernameBox.Text + "/NetPos.csv";
-        //    //CookieAwareWebClient client = new CookieAwareWebClient();
-        //    //client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-        //    //Stream strm = client.OpenRead(url);
-        //    Stream strm = null;
-        //    using (CsvReader csv = new CsvReader(new StreamReader(strm), false))
-        //    {
-        //        while (csv.ReadNextRecord())
-        //        {
-        //            string account = csv[2];
-        //            if (account != accountComboBox.Text)
-        //                continue;
-        //            Trade trade = new Trade();
-        //            int net = Convert.ToInt32(csv[3]);
-        //            string monthyear = string.Concat(csv[4].Split(' ')[0], csv[4].Split(' ')[1]);
-        //            string contract = csv[7];
-        //            DateTime date;
-        //            DateTime.TryParseExact(monthyear, "MMMyy", new CultureInfo("en-US"), DateTimeStyles.None, out date);
-        //            if (net > 0)
-        //            {
-        //                trade = new Trade(date, net, 0);
-        //            }
-        //            else if (net < 0)
-        //            {
-        //                trade = new Trade(date, 0, -net);
-        //            }
-        //            else if (net == 0)
-        //            {
-        //                trade = new SpreadCounter.Trade(date, 0, 0);
-        //            }
-        //            if (contract == "CU")
-        //                UpdateInitialCrudePosition(trade, false);
-        //            else if (contract == "RB")
-        //                UpdateInitialGasPosition(trade, false);
-        //            else if (contract == "HO")
-        //                UpdateInitialHeatPosition(trade, false);
-        //            else if (contract == "NG")
-        //                UpdateInitialNaturalPosition(trade, false);
-        //            else
-        //                continue;
-        //            // gold or currencies
-        //        }
-        //    }
-        //}
-        //#endregion
-        //#region CookieAwareWebClient
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public class CookieAwareWebClient : WebClient
-        //{
+        /// <summary>
+        /// Calculates the crude double fly count.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        private void CalculateCrudeDoubleFlyCount(List<NetTrade> list)
+        {
+            try
+            {
+                List<NetTrade> doubleflylist = new List<NetTrade>();
 
-        //    private CookieContainer m_container = new CookieContainer();
+                doubleflylist.Add(list[0]);
+                for (int i = 0; i < list.Count - 3; i++)
+                {
+                    list[i + 1].Net += list[i].Net;
+                    doubleflylist.Add(new NetTrade(list[i + 1].Date, list[i + 1].Net));
+                }
 
-        //    /// <summary>
-        //    /// Returns a <see cref="T:System.Net.WebRequest"/> object for the specified resource.
-        //    /// </summary>
-        //    /// <param name="address">A <see cref="T:System.Uri"/> that identifies the resource to request.</param>
-        //    /// <returns>
-        //    /// A new <see cref="T:System.Net.WebRequest"/> object for the specified resource.
-        //    /// </returns>
-        //    protected override WebRequest GetWebRequest(Uri address)
-        //    {
-        //        WebRequest request = base.GetWebRequest(address);
-        //        if (request is HttpWebRequest)
-        //        {
-        //            (request as HttpWebRequest).CookieContainer = m_container;
-        //        }
-        //        return request;
-        //    }
-        //}
-        //#endregion
-        ////static public string DecodeFrom64(string encodedData)
-        //{
-        //    byte[] encodedDataAsBytes
-        //        = System.Convert.FromBase64String(encodedData);
-        //    string returnValue =
-        //       System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
-        //    return returnValue;
-        //}
+                PrintCrudeDoubleFly(doubleflylist);
+                CalculateCrudeTripleFlyCount(doubleflylist);
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
 
-        //private CookieContainer ConnectEmidas()
-        //{
-        //    //GET https://www.emidas.com/ HTTP/1.1
-        //    //Host: www.emidas.com
-        //    //User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3
-        //    //Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-        //    //Accept-Language: en-us,en;q=0.5
-        //    //Accept-Encoding: gzip,deflate
-        //    //Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
-        //    //Keep-Alive: 115
-        //    //Connection: keep-alive
+        #endregion
 
-        //    string uri = "https://www.emidas.com";
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-        //    request.Method = "GET";
-        //    request.ProtocolVersion = HttpVersion.Version11;
-        //    request.Host = "www.emidas.com";
-        //    request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3";
-        //    request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        //    request.Headers["Accept-Language"] = "en-us,en;q=0.5";
-        //    request.Headers["Accept-Encoding"] = "gzip,deflate";
-        //    request.Headers["Accept-Charset"] = "ISO-8859-1,utf-8;q=0.7,*;q=0.7";
-        //    request.Headers["Keep-Alive"] = "115";
-        //    request.KeepAlive = true;
-        //    CookieContainer cookieContainer = new CookieContainer();
-        //    request.CookieContainer = cookieContainer;
+        #endregion
 
-        //    // grab the response and print it out to the console along with the status code
-        //    try
-        //    {
-        //        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //        response.Close();
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        MessageBox.Show(e.Message);
-        //    }
-        //    //MessageBox.Show(response.Cookies.ToString());
-        //    //MessageBox.Show(new StreamReader(response.GetResponseStream()).ReadToEnd());
-        //    //MessageBox.Show(Convert.ToString(response.StatusCode));
-        //    return request.CookieContainer;
-        //}
-        //private CookieContainer AuthenticateEmidas(CookieContainer cookieContainer)
-        //{
+        #region Calculate Triple Fly
 
-        //    //POST https://www3.emidas.com/pwdVal.asp HTTP/1.1
-        //    //Host: www3.emidas.com
-        //    //User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3
-        //    //Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-        //    //Accept-Language: en-us,en;q=0.5
-        //    //Accept-Encoding: gzip,deflate
-        //    //Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
-        //    //Keep-Alive: 115
-        //    //Connection: keep-alive
-        //    //Referer: https://www3.emidas.com/default.asp
-        //    //Cookie: ASPSESSIONIDCASBQBRR=LJBMAKPCLMBCEHCKFKEDKENE; ClientId=abendory
-        //    //Content-Type: application/x-www-form-urlencoded
-        //    //Content-Length: 36
-        //    //client_id=abendory&password=JGay123*
+        #region CalculateCrudeTripleFlyCount
 
-        //    string uri = "https://www3.emidas.com/pwdVal.asp";
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-        //    request.Method = "POST";
-        //    request.Host = "www3.emidas.com";
-        //    request.CookieContainer = cookieContainer;
-        //    //request.Headers["Cookie"] = cookie + "; ClientId=" + usernameBox.Text;
-        //    string postData = String.Format("client_id={0}&password={1}", usernameBox.Text, passwordBox.Text);
-        //    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-        //    // Set the ContentType property of the WebRequest.
-        //    request.ContentType = "application/x-www-form-urlencoded";
-        //    // Set the ContentLength property of the WebRequest.
-        //    request.ContentLength = byteArray.Length;
-        //    // Get the request stream.
-        //    Stream dataStream = request.GetRequestStream();
-        //    // Write the data to the request stream.
-        //    dataStream.Write(byteArray, 0, byteArray.Length);
-        //    // Close the Stream object.
-        //    dataStream.Close();
-        //    // Get the response.
-        //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //    // Display the status.
-        //    //MessageBox.Show(((HttpWebResponse)response).StatusDescription);
-        //    // Get the stream containing content returned by the server.
-        //    dataStream = response.GetResponseStream();
-        //    // Open the stream using a StreamReader for easy access.
-        //    StreamReader reader = new StreamReader(dataStream);
-        //    // Read the content.
-        //    string responseFromServer = reader.ReadToEnd();
-        //    // Display the content.
-        //    //MessageBox.Show(responseFromServer);
-        //    // Clean up the streams.
-        //    reader.Close();
-        //    dataStream.Close();
-        //    response.Close();
-        //    //string returnCookie = response.Headers["Set-Cookie"];
-        //    return cookieContainer;
-        //}
-        //private CookieContainer SendQuery(CookieContainer cookieContainer)
-        //{
-        //    //POST https://www3.emidas.com/daQueries.asp HTTP/1.1
-        //    //Host: www3.emidas.com
-        //    //User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3
-        //    //Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-        //    //Accept-Language: en-us,en;q=0.5
-        //    //Accept-Encoding: gzip,deflate
-        //    //Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
-        //    //Keep-Alive: 115
-        //    //Connection: keep-alive
-        //    //Referer: https://www3.emidas.com/daQueries.asp
-        //    //Cookie: ASPSESSIONIDCASBQBRR=JHCMAKPCKFMKCHECLDNHALBG; ClientId=abendory
-        //    //Content-Type: application/x-www-form-urlencoded
-        //    //Content-Length: 1035
-        //    //ogOutput=1&lbQueries=6066449820&_method=%2FdaQueries.asp%3F_method%3D_EM__onclientevent%26pcount%3D2%26p0%3DbtnRun%26p1%3Donclick&_lblQuery_state=_strCaption%3DSelect%2520a%2520Query&_ogOutput_state=_nAlignment%3D1%26_selectedIndex%3D0%26_nCount%3D2%26t0%3DView%2520on%2520Screen%26v0%3D0%26t1%3DCreate%2520Text%2520File%26v1%3D1&_btnNew_state=value%3DNew%2520Query&_tbQueryName_state=_bVisible%3Dfalse%26_nColumnCount%3D25%26_nMaxLength%3D50%26value%3D&_lblQueryName_state=_bVisible%3Dfalse%26_strCaption%3DQuery%2520Name%2520Here&_lbQueries_state=selectedIndex%3D-1%26_nCount%3D3%26t0%3D--Select%2520A%2520Query--%26v0%3DSelect%26t1%3D78288%26v1%3D8542630851%26t2%3DNetPosition%26v2%3D6066449820&_btnEdit_state=value%3DEdit&_btnSave_state=_bVisible%3Dfalse%26value%3DSave&_btnSaveAs_state=_bVisible%3Dfalse%26value%3DSave%2520As&_btnRun_state=value%3DRun&_btnDelete_state=value%3DDelete&_btnCancel_state=_bVisible%3Dfalse%26value%3DCancel&_lblMessage_state=_bVisible%3Dfalse%26_strCaption%3DMessage%2520Text%2520Here&_thisPage_state=
+        /// <summary>
+        /// Calculates the crude triple fly count.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        private void CalculateCrudeTripleFlyCount(List<NetTrade> list)
+        {
+            try
+            {
+                List<NetTrade> tripleflylist = new List<NetTrade>();
 
-        //    string uri = "https://www3.emidas.com/daQueries.asp";
-        //    Uri url = new Uri("https://www3.emidas.com/");
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-        //    request.Method = "POST";
-        //    request.Host = "www3.emidas.com";
-        //    request.Headers["Cookie"] = cookieContainer.GetCookieHeader(url) + "; ClientId=" + usernameBox.Text;
-        //    request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3";
-        //    request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        //    request.Referer = "https://www3.emidas.com/daQueries.asp";
-        //    request.ServicePoint.Expect100Continue = false;
-        //    request.Headers.Set("Cache-Control", "max-age=0");
-        //    request.Headers["Accept-Language"] = "en-us,en;q=0.5";
-        //    request.Headers["Accept-Encoding"] = "gzip,deflate";
-        //    request.Headers["Accept-Charset"] = "ISO-8859-1,utf-8;q=0.7,*;q=0.7";
-        //    request.KeepAlive = true;
-        //    //request.CookieContainer = cookieContainer;
-        //    string postData = "ogOutput=1&lbQueries=6066449820&_method=%2FdaQueries.asp%3F_method%3D_EM__onclientevent%26pcount%3D2%26p0%3DbtnRun%26p1%3Donclick&_lblQuery_state=_strCaption%3DSelect%2520a%2520Query&_ogOutput_state=_nAlignment%3D1%26_selectedIndex%3D0%26_nCount%3D2%26t0%3DView%2520on%2520Screen%26v0%3D0%26t1%3DCreate%2520Text%2520File%26v1%3D1&_btnNew_state=value%3DNew%2520Query&_tbQueryName_state=_bVisible%3Dfalse%26_nColumnCount%3D25%26_nMaxLength%3D50%26value%3D&_lblQueryName_state=_bVisible%3Dfalse%26_strCaption%3DQuery%2520Name%2520Here&_lbQueries_state=selectedIndex%3D-1%26_nCount%3D3%26t0%3D--Select%2520A%2520Query--%26v0%3DSelect%26t1%3D78288%26v1%3D8542630851%26t2%3DNetPosition%26v2%3D6066449820&_btnEdit_state=value%3DEdit&_btnSave_state=_bVisible%3Dfalse%26value%3DSave&_btnSaveAs_state=_bVisible%3Dfalse%26value%3DSave%2520As&_btnRun_state=value%3DRun&_btnDelete_state=value%3DDelete&_btnCancel_state=_bVisible%3Dfalse%26value%3DCancel&_lblMessage_state=_bVisible%3Dfalse%26_strCaption%3DMessage%2520Text%2520Here&_thisPage_state=";
-        //    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-        //    // Set the ContentType property of the WebRequest.
-        //    request.ContentType = "application/x-www-form-urlencoded";
-        //    // Set the ContentLength property of the WebRequest.
-        //    request.ContentLength = byteArray.Length;
-        //    // Get the request stream.
-        //    Stream dataStream = request.GetRequestStream();
-        //    // Write the data to the request stream.
-        //    dataStream.Write(byteArray, 0, byteArray.Length);
-        //    // Close the Stream object.
-        //    dataStream.Close();
-        //    // Get the response.
-        //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //    // Display the status.
-        //    //MessageBox.Show(((HttpWebResponse)response).StatusDescription);
-        //    // Get the stream containing content returned by the server.
-        //    dataStream = response.GetResponseStream();
-        //    // Open the stream using a StreamReader for easy access.
-        //    StreamReader reader = new StreamReader(dataStream);
-        //    // Read the content.
-        //    string responseFromServer = reader.ReadToEnd();
-        //    // Display the content.
-        //    //MessageBox.Show(responseFromServer);
-        //    // Clean up the streams.
-        //    reader.Close();
-        //    dataStream.Close();
-        //    response.Close();
+                tripleflylist.Add(list[0]);
+                for (int i = 0; i < list.Count - 3; i++)
+                {
+                    list[i + 1].Net += list[i].Net;
+                    tripleflylist.Add(new NetTrade(list[i + 1].Date, list[i + 1].Net));
+                }
 
-        //    return cookieContainer;
-        //}
-        //private CookieContainer GetNetPosition(CookieContainer cookieContainer)
-        //{
-        //    //GET https://www2.emidas.com/daNetPos.asp HTTP/1.1
-        //    //Host: www2.emidas.com
-        //    //Connection: keep-alive
-        //    //User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2
-        //    //Referer: https://www2.emidas.com/daQueries.asp
-        //    //Cache-Control: max-age=0
-        //    //Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-        //    //Accept-Encoding: gzip,deflate,sdch
-        //    //Accept-Language: en-US,en;q=0.8
-        //    //Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-        //    //Cookie: ASPSESSIONIDQASCBDRT=LINCLMNCKNNNKKPFMNBFJKGI; ClientId=abendory
+                PrintCrudeTripleFly(tripleflylist);
+            }
+            catch (System.Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
 
-        //    string uri = "https://www3.emidas.com/daNetPos.asp";
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-        //    request.Method = "GET";
-        //    request.ProtocolVersion = HttpVersion.Version11;
-        //    request.Host = "www3.emidas.com";
-        //    request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3";
-        //    request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        //    request.Headers["Accept-Language"] = "en-us,en;q=0.5";
-        //    request.Headers["Accept-Encoding"] = "gzip,deflate,sdch";
-        //    request.Headers["Accept-Charset"] = "ISO-8859-1,utf-8;q=0.7,*;q=0.3";
-        //    //request.Headers["Cookie"] = cookie + "; ClientId=" + usernameBox.Text;
-        //    request.CookieContainer = cookieContainer;
+        #endregion
 
-        //    // grab the response and print it out to the console along with the status code
-        //    try
-        //    {
-        //        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //        response.Close();
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        MessageBox.Show(e.Message);
-        //    }
-        //    //MessageBox.Show(response.Cookies.ToString());
-        //    //MessageBox.Show(new StreamReader(response.GetResponseStream()).ReadToEnd());
-        //    //MessageBox.Show(Convert.ToString(response.StatusCode));
+        #endregion
 
-        //    uri = "https://www2.emidas.com/_ScriptLibrary/pm.js";
-        //    HttpWebRequest request2 = (HttpWebRequest)WebRequest.Create(uri);
-        //    request2.Method = "GET";
-        //    request2.ProtocolVersion = HttpVersion.Version11;
-        //    request2.Host = "www3.emidas.com";
-        //    request2.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3";
-        //    request2.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        //    request2.Headers["Accept-Language"] = "en-us,en;q=0.5";
-        //    request2.Headers["Accept-Encoding"] = "gzip,deflate,sdch";
-        //    request2.Headers["Accept-Charset"] = "ISO-8859-1,utf-8;q=0.7,*;q=0.3";
-        //    request2.CookieContainer = cookieContainer;
-        //    //request2.Headers["Cookie"] = cookie + "; ClientId=" + usernameBox.Text;
-        //    // grab the response and print it out to the console along with the status code
-        //    try
-        //    {
-        //        HttpWebResponse response2 = (HttpWebResponse)request2.GetResponse();
-        //        response2.Close();
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        MessageBox.Show(e.Message);
-        //    }
-        //    return cookieContainer;
-        //}
-        //private Stream GetCsvFile(CookieContainer cookieContainer)
-        //{
-        //    //GET https://www2.emidas.com/users/abendory/NetPos.csv HTTP/1.1
-        //    //Host: www2.emidas.com
-        //    //Connection: keep-alive
-        //    //User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2
-        //    //Referer: https://www2.emidas.com/daNetPos.asp
-        //    //Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-        //    //Accept-Encoding: gzip,deflate,sdch
-        //    //Accept-Language: en-US,en;q=0.8
-        //    //Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
-        //    //Cookie: ASPSESSIONIDQASCBDRT=LINCLMNCKNNNKKPFMNBFJKGI; ClientId=abendory
-        //    //If-None-Match: "971d7c39c5ddca1:b49"
-        //    //If-Modified-Since: Sat, 17 Apr 2010 00:30:47 GMT
 
-        //    string uri = "https://www2.emidas.com/users/" + usernameBox.Text + "/NetPos.csv";
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-        //    request.Method = "GET";
-        //    request.ProtocolVersion = HttpVersion.Version11;
-        //    request.Host = "www3.emidas.com";
-        //    request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3";
-        //    request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        //    request.Headers["Accept-Language"] = "en-us,en;q=0.8";
-        //    request.Headers["Accept-Encoding"] = "gzip,deflate,sdch";
-        //    request.Headers["Accept-Charset"] = "ISO-8859-1,utf-8;q=0.7,*;q=0.3";
-        //    request.Headers["If-None-Match"] = "971d7c39c5ddca1:b49";
-        //    //request.Headers["If-Modified-Since"] = "Sat, 17 Apr 2010 00:30:47 GMT";
-        //    request.KeepAlive = true;
-        //    //CookieContainer cookieContainer = new CookieContainer();
-        //    request.CookieContainer = cookieContainer;
-
-        //    // grab the response
-        //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //    return response.GetResponseStream();
-        //}
-       
+        #region FTP
         //private void LoadCsvData()
         //{
-        //    #region Deprecated
-        //    //openFD.Title = "Load Csv File";
-        //    //openFD.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        //    //openFD.FileName = "";
-        //    //openFD.Filter = "CSV File|*.csv";
-        //    //if (openFD.ShowDialog() != DialogResult.Cancel)
-        //    //    ReadCsv(openFD.FileName);
-
-        //    // query csv from email
-        //    //QueryEmail();
-        //    //ParseFtpCsv();
-        //    #endregion
-
         //    // query csv from sftp
         //    string path = null;
         //    ClearAll();
         //    if (QueryFtp(out path)) ParseFtpCsv(path);
         //}
+        
         //private bool QueryFtp(out string lpath)
         //{
         //    JSch jsch = new JSch();
 
-        //    string host = "sfile.mfglobal.com";
-        //    string user = "sftp_PioneerGroup";
+        //    string host = "";
+        //    string user = "";
         //    string rfile = DateTime.Now.ToString("yyyyMMdd") + "midaspos.txt";
         //    lpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + rfile;
 
-        //    // Compute salted hash
-        //    // System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-        //    // passwordtextBox.Text = SimpleHash.ComputeHash("*u+aD5Pe","SHA512",encoding.GetBytes("somesalt"));
+        //    // Displaying a new loading form with master thread rather than spinning a new thread here
+        //    loading = new Loading();
+        //    loading.Show();
+        //    loading.BringToFront();
+        //    Application.DoEvents();
+        //    // Show or load the main form.
+        //    //this.ShowDialog();
 
-        //    // Use Password Hash
-        //    string passwordHashSha512 = System.Configuration.ConfigurationSettings.AppSettings["passwordhash"];
-        //    if (!SimpleHash.VerifyHash(passwordTextBox.Text, "SHA512", passwordHashSha512))
-        //    {
-        //        TopMostMessageBox.Show("Invalid Password", "Error");
+        //    ciphertext = ReadRegistry();
+
+        //    if(ciphertext)
+        //        //To get access to the original data, use ProtectedData.Unprotect():
+        //        byte[] plaintext= ProtectedData.Unprotect(ciphertext, entropy,
+        //            DataProtectionScope.CurrentUser);
+
+        //    else if (passwordTextBox.Text && String.IsNullOrEmpty(ciphertext))
+        //        // Data to protect. Convert a string to a byte[] using Encoding.UTF8.GetBytes().
+        //        byte[] plaintext = Encoding.UTF8.GetBytes(passwordTextBox.Text);
+
+        //        // Generate additional entropy (will be used as the Initialization vector)
+        //        byte[] entropy = new byte[20];
+        //        using(RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+        //        {
+        //            rng.GetBytes(entropy);
+        //        }
+
+        //        // Store the entropy and ciphertext securely, such as in a file or registry key 
+        //        // with permissions set so only the current user can read it. 
+        //        byte[] ciphertext = ProtectedData.Protect(plaintext, entropy,
+        //            DataProtectionScope.CurrentUser);
+
+        //        WriteRegistry(ciphertext);
+            
+        //    else  // there is no password text and nothing in registry
         //        return false;
-        //    }
 
-        //    MessageBoxThread mbox = new MessageBoxThread();
-        //    Thread mboxthread = new Thread(new ThreadStart(mbox.TimedMessageBox));
-        //    mboxthread.Start();
 
         //    Session session = jsch.getSession(user, host, 22);
-        //    session.setPassword(passwordTextBox.Text);
+        //    session.setPassword(System.Text.ASCIIEncoding.ASCII.GetString(password));
         //    session.connect();
         //    Channel channel = session.openChannel("sftp");
         //    channel.connect();
@@ -2812,11 +2998,29 @@ namespace SpreadCounter
         //            }
         //        }
         //    }
-        //    mboxthread.Join();
-        //    mboxthread.Abort();
+           
         //    session.disconnect();
+        //    loading.Hide();
+
         //    return true;
         //}
+
+    //    private string ReadRegistry()
+    //    {
+    //        string strpath = "path_to_password";
+    //        RegistryKey regKeyAppRoot = Registry.CurrentUser.CreateSubKey(strPath); 
+    //        string ciphertext = (string)regKeyAppRoot.GetValue("Password"); 
+    //        return ciphertext;
+    //    }
+
+    //private void WriteRegistry(ciphertext)
+    //    {
+    //        string strpath = "path_to_password";
+    //        RegistryKey regKeyAppRoot = Registry.CurrentUser.CreateSubKey(strPath); 
+    //        regKeyAppRoot.SetValue("Password", ciphertext);
+    //        return;
+    //    }
+
         //private void ParseFtpCsv(string lpath)
         //{
         //    try
@@ -2871,29 +3075,6 @@ namespace SpreadCounter
         //    }
         //}
 
-        ///// <summary>
-        ///// My Policy
-        ///// </summary>
-        //public class MyPolicy : ICertificatePolicy
-        //{
-        //    /// <summary>
-        //    /// Validates a server certificate.
-        //    /// </summary>
-        //    /// <param name="srvPoint">The <see cref="T:System.Net.ServicePoint"/> that will use the certificate.</param>
-        //    /// <param name="certificate">The certificate to validate.</param>
-        //    /// <param name="request">The request that received the certificate.</param>
-        //    /// <param name="certificateProblem">The problem that was encountered when using the certificate.</param>
-        //    /// <returns>
-        //    /// true if the certificate should be honored; otherwise, false.
-        //    /// </returns>
-        //    public bool CheckValidationResult(ServicePoint srvPoint,
-        //      X509Certificate certificate, WebRequest request,
-        //      int certificateProblem)
-        //    {
-        //        //Return True to force the certificate to be accepted.
-        //        return true;
-        //    }
-        //}
         #endregion
 
         #region GetMonthIndex
@@ -2984,6 +3165,7 @@ namespace SpreadCounter
         private void ClearCrudePosition()
         {
             crudeGrid.Items.Clear();
+            crudeFlyGrid.Items.Clear();
             CrudeFillList.Clear();
             CrudeCombinedFillList.Clear();
             CrudePosition.net = 0;
@@ -3004,6 +3186,7 @@ namespace SpreadCounter
         private void ClearGasPosition()
         {
             gasGrid.Items.Clear();
+            gasFlyGrid.Items.Clear();
             GasFillList.Clear();
             GasCombinedFillList.Clear();
             GasPosition.net = 0;
@@ -3024,6 +3207,7 @@ namespace SpreadCounter
         private void ClearHeatPosition()
         {
             heatGrid.Items.Clear();
+            heatFlyGrid.Items.Clear(); 
             HeatFillList.Clear();
             HeatCombinedFillList.Clear();
             HeatPosition.net = 0;
@@ -3044,6 +3228,7 @@ namespace SpreadCounter
         private void ClearNaturalPosition()
         {
             naturalGrid.Items.Clear();
+            naturalFlyGrid.Items.Clear();
             NaturalFillList.Clear();
             NaturalCombinedFillList.Clear();
             NaturalPosition.net = 0;
@@ -3064,6 +3249,7 @@ namespace SpreadCounter
         private void ClearBrentPosition()
         {
             brentGrid.Items.Clear();
+            brentFlyGrid.Items.Clear();
             BrentFillList.Clear();
             BrentCombinedFillList.Clear();
             BrentPosition.net = 0;
@@ -3272,7 +3458,7 @@ namespace SpreadCounter
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void LoadFile_Click(object sender, EventArgs e)
         {
-            //Load the FC Stone data when we get its
+            //LoadCsvData();
         }
 
         /// <summary>
@@ -3282,32 +3468,8 @@ namespace SpreadCounter
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void SpreadCounter_Load(object sender, EventArgs e)
         {
-            crudeGrid.Columns.Add("Long", 50, HorizontalAlignment.Center);
-            crudeGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
-            crudeGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
-
-            gasGrid.Columns.Add("Long", 50, HorizontalAlignment.Center);
-            gasGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
-            gasGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
-
-            heatGrid.Columns.Add("Long", 50, HorizontalAlignment.Center);
-            heatGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
-            heatGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
-
-            naturalGrid.Columns.Add("Long", 50, HorizontalAlignment.Center);
-            naturalGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
-            naturalGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
-
-            brentGrid.Columns.Add("Long", 50, HorizontalAlignment.Center);
-            brentGrid.Columns.Add("Month", 50, HorizontalAlignment.Center);
-            brentGrid.Columns.Add("Short", 50, HorizontalAlignment.Center);
-
             accountComboBox.Text = "PAXY81";
-            //usernameBox.Text = "uziinc";
-            //passwordBox.Text = "JGay123*";
         }
-
-        #endregion
 
         private void butterflyChartToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -3335,7 +3497,7 @@ namespace SpreadCounter
         {
             if (e.KeyData == Keys.Enter)
             {
-                //Load FC Stone data when we get it
+                //LoadCsvData();
             }
         }
        
@@ -3343,59 +3505,8 @@ namespace SpreadCounter
         {
             ClearAll();
         }
+
+        #endregion
     }
-    public class MessageBoxThread
-    {
-        // This method that will be called when the thread is started
-        public void TimedMessageBox()
-        {
-            MessageBoxEx.Show("Connecting to server...", "Password Validated", 6000);
-        }
-    };
-    static public class TopMostMessageBox
-    {
-        static public DialogResult Show(string message)
-        {
-            return Show(message, string.Empty, MessageBoxButtons.OK);
-        }
-
-        static public DialogResult Show(string message, string title)
-        {
-            return Show(message, title, MessageBoxButtons.OK);
-        }
-
-        static public DialogResult Show(string message, string title,
-            MessageBoxButtons buttons)
-        {
-            // Create a host form that is a TopMost window which will be the 
-
-            // parent of the MessageBox.
-
-            Form topmostForm = new Form();
-            // We do not want anyone to see this window so position it off the 
-
-            // visible screen and make it as small as possible
-
-            topmostForm.Size = new System.Drawing.Size(1, 1);
-            topmostForm.StartPosition = FormStartPosition.Manual;
-            System.Drawing.Rectangle rect = SystemInformation.VirtualScreen;
-            topmostForm.Location = new System.Drawing.Point(rect.Bottom + 10,
-                rect.Right + 10);
-            topmostForm.Show();
-            // Make this form the active form and make it TopMost
-
-            topmostForm.Focus();
-            topmostForm.BringToFront();
-            topmostForm.TopMost = true;
-            // Finally show the MessageBox with the form just created as its owner
-
-            DialogResult result = MessageBox.Show(topmostForm, message, title,
-                buttons);
-            topmostForm.Dispose(); // clean it up all the way
-
-
-            return result;
-        }
-    };
 }
 

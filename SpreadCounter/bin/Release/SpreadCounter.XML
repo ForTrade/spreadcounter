@@ -4,6 +4,23 @@
         <name>SpreadCounter</name>
     </assembly>
     <members>
+        <member name="F:SpreadCounter.Loading.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SpreadCounter.Loading.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SpreadCounter.Loading.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="M:SpreadCounter.InputTrades.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:SpreadCounter.InputTrades"/> class.
@@ -15,14 +32,21 @@
             </summary>
             <param name="form1">The form1.</param>
         </member>
-        <member name="M:SpreadCounter.InputTrades.SubmitButton_Click(System.Object,System.EventArgs)">
+        <member name="M:SpreadCounter.InputTrades.BuyButton_Click(System.Object,System.EventArgs)">
             <summary>
             Handles the Click event of the SubmitButton control.
             </summary>
             <param name="sender">The source of the event.</param>
             <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:SpreadCounter.InputTrades.SubmitTrade">
+        <member name="M:SpreadCounter.InputTrades.SellButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Click event of the SubmitButton control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SpreadCounter.InputTrades.SubmitTrade(System.Boolean)">
             <summary>
             Submits the trade.
             </summary>
@@ -53,13 +77,6 @@
             </summary>
             <param name="year">The year.</param>
             <returns></returns>
-        </member>
-        <member name="M:SpreadCounter.InputTrades.InputTrades_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
-            <summary>
-            Handles the KeyDown event of the InputTrades control.
-            </summary>
-            <param name="sender">The source of the event.</param>
-            <param name="e">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:SpreadCounter.InputTrades.InputTrades_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
             <summary>
@@ -168,6 +185,11 @@
         <member name="F:SpreadCounter.SpreadCounter.butterfly">
             <summary>
             Represents the Butterfly class.  
+            </summary>
+        </member>
+        <member name="F:SpreadCounter.SpreadCounter.loading">
+            <summary>
+            Represents the Loading class.  
             </summary>
         </member>
         <member name="F:SpreadCounter.SpreadCounter.isTradesShown">
@@ -432,6 +454,36 @@
             </summary>
             <param name="fillList">The fill list.</param>
         </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintCrudeFly(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Prints the crude fly.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintGasFly(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Prints the gas fly.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintHeatFly(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Prints the heat fly.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintNaturalFly(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Prints the natural fly.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.PrintBrentFly(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Prints the brent fly.
+            </summary>
+            <param name="fillList">The fill list.</param>
+        </member>
         <member name="M:SpreadCounter.SpreadCounter.BalanceCrudeContracts">
             <summary>
             Balances the crude contracts.
@@ -544,6 +596,18 @@
         <member name="M:SpreadCounter.SpreadCounter.CalculateBrentFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
             <summary>
             Calculates the brent fly count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateCrudeDoubleFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Calculates the crude double fly count.
+            </summary>
+            <param name="list">The list.</param>
+        </member>
+        <member name="M:SpreadCounter.SpreadCounter.CalculateCrudeTripleFlyCount(System.Collections.Generic.List{SpreadCounter.SpreadCounter.NetTrade})">
+            <summary>
+            Calculates the crude triple fly count.
             </summary>
             <param name="list">The list.</param>
         </member>

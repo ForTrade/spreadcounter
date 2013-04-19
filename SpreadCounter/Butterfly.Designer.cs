@@ -87,7 +87,8 @@
             "CL",
             "RB",
             "HO",
-            "NG"});
+            "NG",
+            "BZ"});
             this.productBox.Location = new System.Drawing.Point(30, 51);
             this.productBox.Name = "productBox";
             this.productBox.Size = new System.Drawing.Size(121, 21);

@@ -34,12 +34,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ContractComboBox = new System.Windows.Forms.ComboBox();
             this.MonthComboBox = new System.Windows.Forms.ComboBox();
-            this.SubmitButton = new System.Windows.Forms.Button();
+            this.BuyButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.YearTextBox = new System.Windows.Forms.TextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.SummaryTextBox = new System.Windows.Forms.RichTextBox();
             this.clearPosition_checkBox = new System.Windows.Forms.CheckBox();
+            this.SellButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // PositionTextBox
@@ -113,15 +114,18 @@
             this.MonthComboBox.Size = new System.Drawing.Size(47, 21);
             this.MonthComboBox.TabIndex = 2;
             // 
-            // SubmitButton
+            // BuyButton
             // 
-            this.SubmitButton.Location = new System.Drawing.Point(212, 23);
-            this.SubmitButton.Name = "SubmitButton";
-            this.SubmitButton.Size = new System.Drawing.Size(73, 22);
-            this.SubmitButton.TabIndex = 5;
-            this.SubmitButton.Text = "Submit";
-            this.SubmitButton.UseVisualStyleBackColor = true;
-            this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
+            this.BuyButton.BackColor = System.Drawing.Color.Blue;
+            this.BuyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BuyButton.ForeColor = System.Drawing.Color.White;
+            this.BuyButton.Location = new System.Drawing.Point(212, 23);
+            this.BuyButton.Name = "BuyButton";
+            this.BuyButton.Size = new System.Drawing.Size(89, 42);
+            this.BuyButton.TabIndex = 5;
+            this.BuyButton.Text = "Buy";
+            this.BuyButton.UseVisualStyleBackColor = false;
+            this.BuyButton.Click += new System.EventHandler(this.BuyButton_Click);
             // 
             // label4
             // 
@@ -141,9 +145,9 @@
             // 
             // ClearButton
             // 
-            this.ClearButton.Location = new System.Drawing.Point(212, 50);
+            this.ClearButton.Location = new System.Drawing.Point(307, 180);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(73, 23);
+            this.ClearButton.Size = new System.Drawing.Size(72, 44);
             this.ClearButton.TabIndex = 7;
             this.ClearButton.Text = "Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
@@ -163,26 +167,39 @@
             // clearPosition_checkBox
             // 
             this.clearPosition_checkBox.AutoSize = true;
-            this.clearPosition_checkBox.Location = new System.Drawing.Point(212, 79);
+            this.clearPosition_checkBox.Location = new System.Drawing.Point(212, 85);
             this.clearPosition_checkBox.Name = "clearPosition_checkBox";
             this.clearPosition_checkBox.Size = new System.Drawing.Size(90, 17);
             this.clearPosition_checkBox.TabIndex = 9;
             this.clearPosition_checkBox.Text = "Clear Position";
             this.clearPosition_checkBox.UseVisualStyleBackColor = true;
-            this.clearPosition_checkBox.CheckedChanged += new System.EventHandler(this.ClearPosition_CheckedChanged);
+            // 
+            // SellButton
+            // 
+            this.SellButton.BackColor = System.Drawing.Color.Red;
+            this.SellButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SellButton.ForeColor = System.Drawing.Color.White;
+            this.SellButton.Location = new System.Drawing.Point(304, 23);
+            this.SellButton.Name = "SellButton";
+            this.SellButton.Size = new System.Drawing.Size(81, 42);
+            this.SellButton.TabIndex = 10;
+            this.SellButton.Text = "Sell";
+            this.SellButton.UseVisualStyleBackColor = false;
+            this.SellButton.Click += new System.EventHandler(this.SellButton_Click);
             // 
             // InputTrades
             // 
-            this.AcceptButton = this.SubmitButton;
+            this.AcceptButton = this.BuyButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(297, 207);
+            this.ClientSize = new System.Drawing.Size(388, 233);
+            this.Controls.Add(this.SellButton);
             this.Controls.Add(this.clearPosition_checkBox);
             this.Controls.Add(this.SummaryTextBox);
             this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.YearTextBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.SubmitButton);
+            this.Controls.Add(this.BuyButton);
             this.Controls.Add(this.MonthComboBox);
             this.Controls.Add(this.ContractComboBox);
             this.Controls.Add(this.label3);
@@ -193,8 +210,6 @@
             this.Text = "Input Trades";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputTrades_FormClosing);
-            this.Load += new System.EventHandler(this.InputTrades_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputTrades_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,11 +223,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox ContractComboBox;
         private System.Windows.Forms.ComboBox MonthComboBox;
-        private System.Windows.Forms.Button SubmitButton;
+        private System.Windows.Forms.Button BuyButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox YearTextBox;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.RichTextBox SummaryTextBox;
         private System.Windows.Forms.CheckBox clearPosition_checkBox;
+        private System.Windows.Forms.Button SellButton;
     }
 }
